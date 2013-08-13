@@ -1,0 +1,652 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!-- This template is for creating an Internet Draft using xml2rfc,
+     which is available here: http://xml.resource.org. -->
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+<!-- One method to get references from the online citation libraries.
+     There has to be one entity for each item to be referenced. 
+     An alternate method (rfc include) is described in the references. -->
+
+<!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
+<!ENTITY RFC2629 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2629.xml">
+<!ENTITY RFC3552 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3552.xml">
+<!ENTITY I-D.narten-iana-considerations-rfc2434bis SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.narten-iana-considerations-rfc2434bis.xml">
+<!ENTITY I-D.amante-irs-topology-use-cases SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.amante-irs-topology-use-cases.xml">
+]>
+<?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
+<!-- used by XSLT processors -->
+<!-- For a complete list and description of processing instructions (PIs), 
+     please see http://xml.resource.org/authoring/README.html. -->
+<!-- Below are generally applicable Processing Instructions (PIs) that most I-Ds might want to use.
+     (Here they are set differently than their defaults in xml2rfc v1.32) -->
+<?rfc strict="yes" ?>
+<!-- give errors regarding ID-nits and DTD validation -->
+<!-- control the table of contents (ToC) -->
+<?rfc toc="yes"?>
+<!-- generate a ToC -->
+<?rfc tocdepth="4"?>
+<!-- the number of levels of subsections in ToC. default: 3 -->
+<!-- control references -->
+<?rfc symrefs="yes"?>
+<!-- use symbolic references tags, i.e, [RFC2119] instead of [1] -->
+<?rfc sortrefs="yes" ?>
+<!-- sort the reference entries alphabetically -->
+<!-- control vertical white space 
+     (using these PIs as follows is recommended by the RFC Editor) -->
+<?rfc compact="yes" ?>
+<!-- do not start each main section on a new page -->
+<?rfc subcompact="no" ?>
+<!-- keep one blank line between list items -->
+<!-- end of list of popular I-D processing instructions -->
+
+
+<rfc category="info" docName="draft-medved-irs-topology-requirements-00" ipr="trust200902">
+  <!-- category values: std, bcp, info, exp, and historic
+     ipr values: full3667, noModification3667, noDerivatives3667
+     you can add the attributes updates="NNNN" and obsoletes="NNNN" 
+     they will automatically be output with "(if approved)" -->
+
+  <!-- ***** FRONT MATTER ***** -->
+
+  <front>
+    <!-- The abbreviated title is used in the page header - it is only necessary if the 
+         full title is longer than 39 characters -->
+
+    <title abbrev="Topology API Requirements">Topology API Requirements</title>
+
+    <!-- add 'role="editor"' below for the editors if appropriate -->
+
+    <!-- Another author who claims to be an editor -->
+
+    <author fullname="Jan Medved" initials="J." surname="Medved">
+      <organization>Cisco Systems, Inc.</organization>
+      <address>
+	<postal>
+	  <street>170, West Tasman Drive</street>
+	  <city>San Jose</city>
+	  <region>CA</region>
+	  <code>95134</code>
+	  <country>USA</country>
+	</postal>
+	<email>jmedved@cisco.com</email>
+      </address>
+    </author>
+
+    <author fullname="Hannes Gredler" initials="H." surname="Gredler">
+      <organization>Juniper Networks</organization>
+      <address>
+        <postal>
+          <street></street>
+          <city></city>
+          <region></region>
+          <code></code>
+          <country>USA</country>
+        </postal>
+        <email>hannes@juniper.net</email>
+      </address>
+    </author>
+
+     <author fullname="Stefano Previdi" initials="S."  surname="Previdi">
+      <organization>Cisco Systems, Inc.</organization>
+      <address>
+	<postal>
+	  <street>170, West Tasman Drive</street>
+	  <city>San Jose</city>
+	  <region>CA</region>
+	  <code>95134</code>
+	  <country>USA</country>
+	</postal>
+	<email>sprevidi@cisco.com</email>
+      </address>
+    </author>
+
+    <author fullname="Shane Amante" initials="S." surname="Amante">
+      <organization>Level 3 Communications, Inc.</organization>
+      <address>
+        <postal>
+          <street>1025 Eldorado Blvd</street>
+          <city>Broomfield</city>
+          <region>CO</region>
+          <code>80021</code>
+          <country>USA</country>
+        </postal>
+        <email>shane@level3.net</email>
+      </address>
+    </author>
+
+   <date month="October" year="2012" />
+
+    <!-- If the month and year are both specified and are the current ones, xml2rfc will fill 
+         in the current day for you. If only the current year is specified, xml2rfc will fill 
+	 in the current day and month for you. If the year is not the current one, it is 
+	 necessary to specify at least a month (xml2rfc assumes day="1" if not specified for the 
+	 purpose of calculating the expiry date).  With drafts it is normally sufficient to 
+	 specify just the year. -->
+
+    <!-- Meta-data Declarations -->
+
+    <area>General</area>
+
+    <workgroup>Internet Engineering Task Force</workgroup>
+
+    <!-- WG name at the upperleft corner of the doc,
+         IETF is fine for individual submissions.  
+	 If this element is not present, the default is "Network Working Group",
+         which is used by the RFC Editor as a nod to the history of the IETF. -->
+
+    <keyword>template</keyword>
+
+    <!-- Keywords will be incorporated into HTML output
+         files in a meta tag but they have no effect on text or nroff
+         output. If you submit your draft to the RFC Editor, the
+         keywords will be used for the search engine. -->
+
+    <abstract>
+
+      <t>This document describes requirements for collecting topology data from
+      network elements and other sources, creating a coherent view of the
+      network topology from the collected data, and presenting the topology view
+      to various applications that need to: a) understand the topology; and, b)
+      interact/change the topology of the physical or logical network.  for
+      reflecting changes to the topology back in network elements..</t>
+
+    </abstract>
+  </front>
+
+  <middle>
+    <section title="Introduction">
+      <t><xref target="I-D.amante-irs-topology-use-cases"/> demonstrates the need for a
+      network function that would provide a common, standard-based topology view
+      to applications. This function is called 'Topology Manager' in this
+      document. which specifies requirements for the Topology Manager. Topology
+      Manager requirements fall into one of the following categories:
+
+      <list style="hanging">
+	<t hangText="General:">describes general requirements for the Topology
+	Manager</t> 
+
+	<t hangText="Data Model:">describes requirements for the network
+	topology data model &amp; view</t>
+
+	<t hangText="Northbound (Client) API:">describes requirements for
+	Topology Manager's communication with clients</t>
+
+	<t hangText="Southbound (Network &amp; Device) API:">describes
+	requirements for Topology Manager's communication with Network Elements
+	and other topology data sources</t>
+
+ 	<t hangText="Network Elements:">describes requirements for the Network
+ 	Element's data model, capabilities, etc. required to support collection
+ 	of network topology data</t>
+      </list>
+      </t>
+
+      <t>The rest of this document is organized as follows. First, the Topology
+      Manager's operational model is described in <xref
+      target="operational_model"/>. Topology Manager requirements are presented
+      in <xref target="server-requirements"/>. Finally, Network Element
+      requirements are presented in <xref target="ne-requirement"/>..</t>
+
+      <section title="Requirements Language">
+        <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+        "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+        document are to be interpreted as described in <xref
+        target="RFC2119">RFC 2119</xref>.</t>
+      </section>
+    </section>
+
+    <section anchor="operational_model" title="Operational Model">
+      <t>As defined in <xref target="I-D.amante-irs-topology-use-cases"/>, the
+      Topology Manager performs the following tasks:
+      <list style="symbols">
+	<t>Collection of topology data from multiple sources: Network Elements,
+	routing protocols, inventory collection, statistics collection, etc, as
+	discussed in <xref target="I-D.amante-irs-topology-use-cases"/>. Note
+	that some of the data sources, such as statistics or inventory, will be
+	used not only by the Topology Manager, but by other applications as
+	well. Note also that topology data sources may reside in multiple IGP
+	areas or multiple ASes, and/or in multiple network layers. </t>
+
+	<t>Creation of global topology view / common data model from the
+	collected data; the topology view can span multiple network layers as
+	well as multiple routing and switching domains. The global view includes
+	all network elements and resources existing in the infrastructure,
+	whether they are currently actively used or not.  An example consists of
+	reconstructing the global view of the network including router or switch
+	ports that are available bot not in use.</t>
+	
+	<t>Presentation of the network view / model to clients (applications).
+	The Topology Manager can create multiple application-specific views from
+	its common global topology database.</t>
+      </list>
+      </t>
+
+      <t>The operational model is shown in <xref target="FIG_ops_model"/>.</t>
+
+ 	<figure anchor="FIG_ops_model" title="Topology Manager operational model">
+	  <artwork align="center"><![CDATA[
+             +------------+                   +------------+
+             |   Client   |                   |   Client   |
+             +------------+                   +------------+
+                   ^                                ^
+                   |         Northbound API         |
+                   +---------------+----------------+
+                                   | 
+                                   |               
+                      +-------------------------+               
+                      |     Topology Manager    |  
+               ...<-->| +---------------------+ |<--> Peer Topology
+                      | | Topology Data Model | |        Managers
+                      | +---------------------+ |
+                      +-------------------------+               
+                                ^  ^  Southbound APIs      
+    Other Topology Sources      |  |               
+     (BGP-LS, Statistics,  -----+  |                   
+          Inventory)               | SNMP, NetConf, IRS, OF, TL1, ...              
+         +-------------------------+------------------------+
+         |                         |                        |
++----------------+        +----------------+       +----------------+
+| Network Element|        | Network Element|       | Network Element|
+| +------------+ |<-LLDP->| +------------+ |<-LMP->| +------------+ |
+| | Data Model | |        | | Data Model | |       | | Data Model | |
+| +------------+ |        | +------------+ |       | +------------+ |
++----------------+        +----------------+       +----------------+
+
+	  ]]></artwork>
+	</figure>
+
+      <t>Topology information from network elements is relayed into the Topology
+      Manager Function via its Southbound API, as shown in <xref
+      target="FIG_ops_model"/>. Sources of topology information may be Network
+      Elements at different layers of the network, such as appliances, routers,
+      L2 switches, optical transponders, optical switches. or monitoring,
+      provisioning and network analytics tools, such as Statistics Collection or
+      an Inventory subsystem. </t>
+
+      <t>The Topology Manager Function reconstructs the network/global view
+      (that can be on a per client or per application base) and distributes it
+      to its clients through northbound APIs. Examples of possible northbound
+      APIs are ReST, XMPP or Websockets. The Topology Manager Function can be
+      instantiated in a standalone server, be a part of a comprehensive
+      orchestration / data collection / presentation framework (see <xref
+      target="I-D.amante-irs-topology-use-cases"/>), or embedded in a routing element. A
+      client can be an application or a function in an upper layer framework,
+      such as a policy function.</t>
+
+      <t>Depending on the data it collects, a Topology Manager may not have
+      visibility into the entire network. In order too create a global topology,
+      the Topology Manager may get complementary partial topologie views from
+      other Topology Managers via a Peer Topology Manager API.</t>
+
+    </section>
+    <section anchor="server-requirements" title="Topology Manager Requirements">
+      <section anchor="general" title="General Requirements">
+	<t>The general requirements are as follows: 
+        <list style="format TMF.GEN-%d: ">
+          <t>IRS MUST define a common vocabulary that describes attributes
+          associated with topological components of a network. This is more
+          commonly referred to as a "normalized" topology.</t>
+
+          <t>IRS MUST define a data model that describes the topological components
+          represented by the Topology Manager service. This data model will be
+          written using a common vocabulary, that allows one to assemble the
+          components of a network topology so that one can, for example,
+          describe a physical link and all of its associated physical layer
+          attributes such as: media type, bandwidth, MTU, etc.</t>
+
+	  <t>The Topology Manager has a Northbound (Client) API and
+	  multiple Southbound APIs for collecting topology data from
+	  networks. Southbound APIs can be, for example, SNMP, NETCONF, CLI,
+	  IRS, OpenFlow, or routing protocols (IGPs/BGP).</t>
+
+	  <t>The Topology Manager has an East-West (Peer Manager) API to
+	  exchange topology information with peer Topology Managers. Topologies
+	  exchanged with peer Topology Managers can be real or abstract. Note
+	  that the East-West API can be the same as the Northbound API.</t>
+
+	  <t>The Topology Manager MUST be able to collect and process
+	  topology data from hundreds of thousands of sources (network elements,
+	  etc.). Being able to collect data from large number of sources is
+	  especially important in very large optical and transport network.</t>
+
+	  <t>The Topology Manager SHOULD be able to provide multiple
+	  application-specific views to different clients.</t>
+
+	  <t>The Topology Manager MUST allow for bi-directional flow of
+	  topology data between clients and the network: clients MUST be able to
+	  get network topology information and to inject policies and/or state
+	  related to network topology.</t>
+
+	  <t>The transport protocol on all Topology Manager APIs MUST support
+	  incremental updates between Topology Managers or between a Topology
+	  Manager and a client.</t>
+
+
+	</list>
+	</t>
+      </section>
+
+      <section anchor="data-model" title="Data Model Requirements">
+
+	<t>The requirements for the topology data model are as follows: 
+        <list style="format TMF.DM-%d: ">
+	  <t>The topology data model MUST be able to describe topology and
+	  characteristics of different network layers: 
+	  <list style="symbols">
+	    <t>Optical DWDM (for future study)</t>
+	    <t>Optical OTN (for future study)</t>
+	    <t>L2 (Aggregated links, L2 topologies)</t>
+	    <t>IP/MPLS,</t>
+	    <t>VPNs</t>
+	    <t>Services, such as cloud services, or CDNs</t>
+	  </list>
+	  </t>
+	  
+	  <t>The topology data model MUST support multiple administrative
+	  domains.</t>
+
+	  <t>The Topology Manager MUST provide data normalization, i.e. various
+	  types of topology information from different network elements at
+	  different network layers and in different admin domains is processed
+	  into a single, common format for clients' consumption.</t>
+
+	  <t>The topology data model MUST be able to convey enough information
+	  so that a client can correlate topologies in different layers and from
+	  multiple administrative domains.</t>
+
+	  <t>The topology data model MUST support multi-layer grouping of
+	  elements as a means of coalescing different nodes and links
+	  into "network layers".  For example, links with IPv4 addresses might
+	  represent Layer 3 of the network topology while links with Ethernet
+	  MAC addresses might represent Layer 2.  Furthermore, virtual private
+	  networks can be represented using this grouping mechanism.</t>
+
+          <t>Association between components of different layers is needed as a
+          means of indicating relationships (i.e.: dependency, stacking,
+          etc...) between components where layers are associated. For example,
+          a layer 2 port might have several IPv4 or IPv6 interfaces that
+          utilize it. These would be represented as associations to and from
+          these components.</t>
+
+	  <t>Both active and inactive topologies MUST be represented in the
+	  topology database. Inactive topology is not exhaustively seen in IGP
+	  routing protocols. It must be retrieved by querying inventory in
+	  network elements, for example new line cards inserted in a chassis,
+	  new chassis, ports in the down state, etc.</t>
+
+	  <t>The topology data model MUST be hierarchical and MUST support
+	  summarization of sub-topologies. Topology summarization and creation
+	  of abstract topologies can be provided by the Topology Manager or the
+	  Orchestration Function</t>
+
+	  <t>The topology data model MUST be able to describe abstract
+	  topologies. Abstract topologies can contain real and abstract nodes
+	  and real and abstract links. An abstract topology MAY be used by a
+	  provider to describe characteristics of a transit network (bandwidth,
+	  delay, protection, etc.)</t>
+
+	  <t>The topology data model MUST support dynamic data, such as link
+	  and node utilizations (perhaps as optional attributes).</t>
+
+	  <t>The topology data model MUST allow a user (operator) to determine
+	  the path between two nodes. The path should be traceable at
+	  all network layers that participate in the delivery of packets
+	  between two nodes. For example, for IP traffic exchanged between 2
+	  routers, the user should be able to identify all L2 switches and
+	  optical switches that carry the traffic between the routers.</t>
+
+	  <t>The topology data model MUST support multiple BGP Autonomous
+	  Systems and multiple IGP areas. Support for multiple administrative
+	  domains is for further study.</t>
+
+	  <t>The topology data model MUST be human-friendly, i.e. not SNMP
+	  MIBs, but something much more analogous to YANG models. </t>
+
+          <t>The data model SHOULD support topology abstraction, allowing
+          clients that consume topology information in a constrained manner. For
+          example, a client wishing to view only interfaces and nodes present in
+          a sub-graph of the Layer 3 topology should be able to specify an
+          interest in this subset of information rather than having to read out
+          and parse through the entire set of links and nodes.</t>
+
+	</list>
+	</t>
+	
+	<section anchor="l2-data-model" title="Layer 2 Data Model Requirements">
+	  <t>The requirements for the L2 topology data model are as follows: 
+	  <list style="format TMF.DM.L2-%d: ">
+	    <t>Inventory, (link) status and counter information MUST be
+	    retrieved from L2 Network Elements via NETCONF and SNMP.</t>
+
+	    <t>L2 Network Elements MUST be able to provide data obtained from L2
+	    topology discovery protocols.</t>
+	  </list>
+	  </t>
+	</section>
+
+	<section anchor="ip-mpls-data-model" title="IP/MPLS Layer Data Model Requirements">
+	  <t>The requirements for the IP/MPLS topology data model are as follows: 
+	  <list style="format TMF.DM.IP-%d: ">
+	    <t>The data model of the IP/MPLS layer MUST support both link
+	    topology and prefixes.</t>
+
+	    <t>Link topology may be retrieved from an IGP, BGP-LS, or by getting
+	    node neighbor information directly from network elements via a
+	    management protocol such as SNMP, NETCONF or CLI.</t>
+
+	    <t>Links in the IP/MPLS data model can include, among others, one or
+	    more of the following link attributes:
+
+	    <list style="symbols">
+	      <t>Local and Remote anchor node IDs (Router ID, AS#, Area ID, MT
+	      Topology ID)</t>
+	      <t>Metrics</t>
+	      <t>Admin Group</t>
+	      <t>Max link bandwidth</t>
+	      <t>Unreserved / utilized bandwidth</t>
+	      <t>Link Protection type</t>
+	      <t>MPLS Protocol mask</t>
+	      <t>IS-IS DIS</t>
+	      <t>OSPF DR/BDR</t>
+	      <t>Link prefix</t>
+	      <t>Link characteristics (BW, delay, error rate)</t>
+	      <t>Link description</t>
+	      <t>Link-specific timers, (Hello &amp; Holddown)</t>
+	    </list>
+	    </t>
+
+	    <t>Nodes in the IP/MPLS data model MAY include one or more
+	    of the following node attributes:
+	    <list style="symbols">
+	      <t>Node Type: simple node / aggregate node</t>
+	      <t>Intra area router</t>
+	      <t>Inter area router (ISIS L1L2 or OSPF ABR)</t>
+	      <t>AS boundary router</t>
+	      <t>MPLS-VPN Edge router (PE)</t>
+	      <t>Tunnel head-end/tail-end</t>
+	      <t>Node ID:: Node ID (Router ID, AS#, Area ID, MT Topology ID)</t>
+	      <t>Flags: Overload, Attached, External, ABR</t>
+	      <t>Node capabilities as defined in RFC5073</t>
+	      <t>BGP: aggregate IP prefix + mask (with associated tie-down route
+	      information to inject the aggregate route into BGP)</t>
+	      <t>BGP policy associated with a given iBGP/eBGP neighbor; policy
+	      matching criteria can be, among others, remote-AS, local-AS,
+	      Local-AS tweaks to manipulate AS_PATH recv'd or transmitted, timers
+	      (Hello, HoldTime), AFI/SAFI, route-map/policy-statements
+	      applied/active (including associated prefix-lists, AS_PATH regexp
+	      filters, etc. and resulting manipulation of BGP path attributes,
+	      e.g.: changing LOCAL_PREF, MED, BGP community, etc.)</t>
+	      <t>BGP statistics collection: number of IP paths/prefixes learned
+	      per neighbor</t>
+	    </list>
+	    </t>
+
+	  </list>
+	  </t>
+	</section>
+      </section>
+
+      <section anchor="nb-api" title="Northbound (Client) API Requirements">
+
+	<t>The requirements for the Topology Manager's northbound (client)
+	interface are as follows:
+
+	<list style="format TMF.NB-%d: ">
+	  <t>The transport protocol between the Topology Manager and its clients
+	  SHOULD have efficient encoding so that large topologies can be
+	  transferred with reasonable performance.</t>
+
+	  <t>The transport protocol MUST support flow-control in case a client
+	  cannot digest updates fast enough from its server.</t>
+
+	  <t>The transport protocol MUST support push of topology updates from
+	  the Topology Manager to clients.</t>
+
+	  <t>The protocol MUST implement a mechanism through which a client can
+	  efficiently determine the latest information especially when it
+	  receives multiple copies of the same topology from multiple Topology
+	  Managers. An example is the IGP Sequence Number that is used on IGP
+	  routing updates.</t>
+
+	  <t>The Northbound API MUST support publishing of events to a dynamic
+	  list of clients/applications.  This is helpful for the Northbound API
+	  to signal events as they occur in the network, e.g.: insertion or
+	  removal of linecards, etc.</t>
+
+	  <t>The Northbound API SHOULD support subscription to events from a
+	  dynamic list of clients/applications.  This will allow the Topology
+	  System to react dynamically when, for example, new requests for
+	  services are asked to be created.</t>
+
+          <t>The Northbound API SHOULD allow clients to subscribe to a rich
+          assortment of attributes and/or data models so that they are
+          automatically notified of changes within the network, (as a result of
+          a node failure, card insertion, etc.), as well as changes made by
+          other upper-layer applications to the network, (for example,
+          addition/subtraction of physical links to the network during network
+          augmentation or optimization, etc.)</t>
+
+          <t>The Northbound API MUST provide a means for non-routers to
+          communicate with the model. Until now, clients that could gather
+          network topology and inventory information were generally limited to
+          those that could speak routing protocols.</t>
+	</list>
+	</t>
+      </section>
+
+      <section anchor="sb-api" title="Southbound (Network &amp; Device) API Requirements">
+	<t>The requirements for the Topology Manager's southbound
+	(network element) interface are as follows:
+	<list style="format TMF.SB-%d: ">
+	  <t>The transport protocol between the Topology Manager and the
+	  topology data sources (Network Elements, etc.)  SHOULD have efficient
+	  encoding so that large data models can be transferred with reasonable
+	  performance.</t>
+
+	  <t>The transport protocol MUST support incremental updates from a
+	  Network Element to the Topology Manager.</t>
+
+	  <t>The transport protocol MUST support push of topology updates from a
+	  Network Element to the Topology Manager.</t>
+	</list>
+	</t>
+      </section>
+    </section>
+
+    <section anchor="ne-requirement" title="Network Element Requirements">
+      <t>The requirements for the topology data model are as follows: 
+        <list style="format NE-%d: ">
+
+	  <t>Each network element SHOULD contain an inventory database, which
+	  SHOULD be a definitive source of information with respect to the
+	  physical HW and logical, locally significant identifiers, e.g.: VLANs,
+	  deployed in the system. The Topology Manager collects inventory data
+	  from network elements and creates an authoritative view of physical
+	  hardware deployed in the network.</t>
+
+	  <t> The inventory DB SHOULD be augmented with the physical properties
+	  associated with the ports/interfaces that are directly connected to
+	  the device, (e.g.: BW, media type, etc.).</t>
+
+	  <t>The inventory DB MAY be augmented through the IRS framework pushing
+	  information into the network element to, for example, associate
+	  information the installer may have knowledge of, but the network
+	  element may not be able to learn on its own, e.g.: it's physical
+	  location (address), rack/bay information, etc.</t>
+
+	  <t>Relevant network elements should automatically and dynamically
+	  acquire information associated with their immediately adjacent
+	  neighbors using protocols such as LLDP, LMP, etc. A network element
+	  should further augment it's physical port inventory DB with this
+	  information so that the system can report on whom it's directly
+	  connected.</t>
+
+	</list>
+      </t>
+    </section>
+
+
+   <!-- This PI places the pagebreak correctly (before the section title) in
+         the text output. -->
+
+    <?rfc needLines="8" ?>
+
+
+    <section anchor="Acknowledgements" title="Acknowledgements">
+      <t>The authors would like to thank Alia Atlas, Chris Metz, Dave Ward, and
+      Tom Nadeau for their comments and input.</t>
+
+    </section>
+
+    <!-- Possibly a 'Contributors' section ... -->
+
+    <section anchor="IANA" title="IANA Considerations">
+      <t>This memo includes no request to IANA.</t>
+
+    </section>
+
+    <section anchor="Security" title="Security Considerations">
+      <t>tbd.</t>
+    </section>
+  </middle>
+
+  <!--  *****BACK MATTER ***** -->
+
+  <back>
+    <!-- References split into informative and normative -->
+
+    <!-- There are 2 ways to insert reference entries from the citation libraries:
+     1. define an ENTITY at the top, and use "ampersand character"RFC2629; here (as shown)
+     2. simply use a PI "less than character"?rfc include="reference.RFC.2119.xml"?> here
+        (for I-Ds: include="reference.I-D.narten-iana-considerations-rfc2434bis.xml")
+
+     Both are cited textually in the same manner: by using xref elements.
+     If you use the PI option, xml2rfc will, by default, try to find included files in the same
+     directory as the including file. You can also define the XML_LIBRARY environment variable
+     with a value containing a set of directories to search.  These can be either in the local
+     filing system or remote ones accessed by http (http://domain/dir/... ).-->
+
+    <references title="Normative References">
+      <!--?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml"?-->
+
+      &RFC2119;
+      &I-D.amante-irs-topology-use-cases;
+
+    </references>
+
+
+    <!-- Here we use entities that we defined at the beginning. -->
+<!-- 
+    <references title="Informative References">
+    </references>
+-->
+    <section anchor="app-additional" title="Additional Stuff">
+      <t>This becomes an Appendix.</t>
+    </section>
+
+    <!-- Change Log
+
+v00 2021-07-17  Initial version; we may not need this
+    
+    end of Change log -->
+  </back>
+</rfc>

@@ -1,0 +1,1223 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!-- This template is for creating an Internet Draft using xml2rfc,
+     which is available here: http://xml.resource.org. -->
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+<!-- One method to get references from the online citation libraries.
+     There has to be one entity for each item to be referenced. 
+     An alternate method (rfc include) is described in the references. -->
+<!ENTITY rfc2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
+<!ENTITY rfc4655 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4655.xml">
+<!ENTITY rfc5693 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5693.xml">
+<!ENTITY I-D.ietf-pce-stateful-pce-02 SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-ietf-pce-stateful-pce-02.xml">
+<!ENTITY I-D.ietf-alto-protocol SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-ietf-alto-protocol-13.xml">
+<!ENTITY I-D.ietf-idr-ls-distribution SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-ietf-idr-ls-distribution-01.xml">
+<!ENTITY I-D.ward-irs-framework SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-ward-irs-framework-00.xml">
+<!ENTITY I-D.atlas-irs-problem-statement SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-atlas-irs-problem-statement-00.xml">
+<!ENTITY I-D.previdi-isis-te-metric-extensions SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-previdi-isis-te-metric-extensions-02.xml">
+<!ENTITY I-D.ietf-ospf-te-metric-extensions SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-ietf-ospf-te-metric-extensions-02.xml">
+
+]>
+<?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
+<!-- used by XSLT processors -->
+<!-- For a complete list and description of processing instructions (PIs), 
+     please see http://xml.resource.org/authoring/README.html. -->
+<!-- Below are generally applicable Processing Instructions (PIs) that most I-Ds might want to use.
+     (Here they are set differently than their defaults in xml2rfc v1.32) -->
+<?rfc strict="yes" ?>
+<!-- give errors regarding ID-nits and DTD validation -->
+<!-- control the table of contents (ToC) -->
+<?rfc toc="yes"?>
+<!-- generate a ToC -->
+<?rfc tocdepth="4"?>
+<!-- the number of levels of subsections in ToC. default: 3 -->
+<!-- control references -->
+<?rfc symrefs="yes"?>
+<!-- use symbolic references tags, i.e, [RFC2119] instead of [1] -->
+<?rfc sortrefs="yes" ?>
+<!-- sort the reference entries alphabetically -->
+<!-- control vertical white space 
+     (using these PIs as follows is recommended by the RFC Editor) -->
+<?rfc compact="yes" ?>
+<!-- do not start each main section on a new page -->
+<?rfc subcompact="no" ?>
+<!-- keep one blank line between list items -->
+<!-- end of list of popular I-D processing instructions -->
+<rfc category="info" docName="draft-amante-irs-topology-use-cases-01"
+     ipr="trust200902">
+  <!-- category values: std, bcp, info, exp, and historic
+     ipr values: full3667, noModification3667, noDerivatives3667
+     you can add the attributes updates="NNNN" and obsoletes="NNNN" 
+     they will automatically be output with "(if approved)" -->
+
+  <!-- ***** FRONT MATTER ***** -->
+
+  <front>
+    <!-- The abbreviated title is used in the page header - it is only necessary
+         if the full title is longer than 39 characters -->
+
+    <title abbrev="Topology API Use Cases">Topology API Use Cases</title>
+
+    <!-- add 'role="editor"' below for the editors if appropriate -->
+
+    <!-- Another author who claims to be an editor -->
+
+    <author fullname="Shane Amante" initials="S." 
+            surname="Amante">
+      <organization>Level 3 Communications, Inc.</organization>
+
+      <address>
+        <postal>
+          <street>1025 Eldorado Blvd</street>
+          <city>Broomfield</city>
+          <region>CO</region>
+          <code>80021</code>
+          <country>USA</country>
+        </postal>
+
+        <email>shane@level3.net</email>
+      </address>
+    </author>
+
+    <author fullname="Jan Medved" initials="J."  surname="Medved">
+      <organization>Cisco Systems, Inc.</organization>
+
+      <address>
+        <postal>
+          <street>170 West Tasman Drive</street>
+          <city>San Jose</city>
+          <region>CA</region>
+          <code>95134</code>
+          <country>USA</country>
+        </postal>
+
+        <email>jmedved@cisco.com</email>
+      </address>
+    </author>
+
+    <author fullname="Thomas D. Nadeau" initials="T." surname="Nadeau">
+      <organization>Juniper Networks</organization>
+
+      <address>
+        <postal>
+          <street>1194 N. Mathilda Ave.</street>
+          <city>Sunnyvale</city>
+          <region>CA</region>
+          <code>94089</code>
+          <country>USA</country>
+        </postal>
+
+        <email>tnadeau@juniper.net</email>
+      </address>
+    </author>
+
+    <date year="2012"/>
+
+    <!-- If the month and year are both specified and are the current ones,
+         xml2rfc will fill in the current day for you. If only the current year
+         is specified, xml2rfc will fill in the current day and month for
+         you. If the year is not the current one, it is necessary to specify at
+         least a month (xml2rfc assumes day="1" if not specified for the purpose
+         of calculating the expiry date).  With drafts it is normally sufficient
+         to specify just the year. -->
+
+    <!-- Meta-data Declarations -->
+
+    <area>General</area>
+
+    <workgroup>Internet Engineering Task Force</workgroup>
+
+    <!-- WG name at the upperleft corner of the doc, IETF is fine for individual
+         submissions.  If this element is not present, the default is "Network
+         Working Group", which is used by the RFC Editor as a nod to the history
+         of the IETF. -->
+
+    <keyword>template</keyword>
+
+    <!-- Keywords will be incorporated into HTML output files in a meta tag but
+         they have no effect on text or nroff output. If you submit your draft
+         to the RFC Editor, the keywords will be used for the search engine. -->
+
+    <abstract>
+      <t>This document describes use cases for gathering routing, forwarding and
+      policy information, (hereafter referred to as topology information), about
+      the network. It describes several applications that need to view the
+      topology of the underlying physical or logical network. This document
+      further demonstrates a need for a "Topology Manager" and related functions
+      that collects topology data from network elements and other data sources,
+      coalesces the collected data into a coherent view of the overall network
+      topology, and normalizes the network topology view for use by clients --
+      namely, applications that consume topology information.</t>
+    </abstract>
+  </front>
+
+  <middle>
+    <section anchor="intro" title="Introduction">
+      <t>In today's networks, a variety of applications, such as Traffic
+      Engineering, Capacity Planning, Security Auditing or Services
+      Provisioning (for example, Virtual Private Networks), have a common need
+      to acquire and consume network topology information. Unfortunately, all
+      of these applications are (typically) vertically integrated: each uses
+      its own proprietary normalized view of the network and proprietary data
+      collectors, interpreters and adapters, which speak a variety of
+      protocols, (SNMP, CLI, SQL, etc.) directly to network elements and to
+      back-office systems. While some of the topological information can be
+      distributed using routing protocols, unfortunately it is not desirable
+      for some of these applications to understand or participate in routing
+      protocols.</t>
+
+      <t>This approach is incredibly inefficient for several reasons. First,
+      developers must write duplicate 'network discovery' functions, which
+      then become challenging to maintain over time, particularly as/when new
+      equipment are first introduced to the network. Second, since there is no
+      common "vocabulary" to describe various components in the network, such
+      as physical links, logical links, or IP prefixes, each application has
+      its own data model. To solve this, some solutions have distributed this
+      information in the normalized form of routing distribution. However,
+      this information still does not contain "inactive" topological
+      information, thus not containing information considered to be part of a
+      network's inventory.</t>
+
+      <t>These limitations lead to applications being unable to easily exchange
+      information with each other. For example, applications cannot share
+      changes with each other that are (to be) applied to the physical and/or
+      logical network, such as installation of new physical links, or deployment
+      of security ACL's. Each application must frequently poll network elements
+      and other data sources to ensure that it has a consistent representation
+      of the network so that it can carry out its particular domain-specific
+      tasks. In other cases, applications that cannot speak routing protocols
+      must use proprietary CLI or other management interfaces which represent
+      the topological information in non-standard formats or worse, semantic
+      models.</t>
+
+      <t>Overall, the software architecture described above at best results in
+      incredibly inefficient use of both software developer resources and
+      network resources, and at worst, it results in some applications simply
+      not having access to this information.</t>
+
+      <t><xref target="fig_current_network_reference"/> is an illustration of
+      how individual applications collect data from the underlying network.
+      Applications retrieve inventory, network topology, state and statistics
+      information by communicating directly with underlying Network Elements
+      as well as with intermediary proxies of the information. In addition,
+      applications transmit changes required of a Network Element's
+      configuration and/or state directly to individual Network Elements,
+      (most commonly using CLI or Netconf). It is important to note that the
+      "data models" or semantics of this information contained within Network
+      Elements are largely proprietary with respect to most configuration and
+      state information, hence why a proprietary CLI is often the only choice
+      to reflect changes in a NE's configuration or state. This remains the
+      case even when standards-based mechanisms such as Netconf are used which
+      provide a standard syntax model, but still often lack due to the
+      proprietary semantics associated with the internal representation of the
+      information. </t>
+
+      <figure anchor="fig_current_network_reference"
+              title="Applications getting topology data">
+        <artwork align="center"><![CDATA[
+                            +---------------+
+                         +----------------+ |
+                         |  Applications  |-+
+                         +----------------+
+                               ^  ^  ^
+           SQL, RPC, ReST      #  |  *    SQL, RPC, ReST ...
+        ########################  |  ************************
+        #                         |                         *
+  +------------+                  |                   +------------+
+  | Statistics |                  |                   | Inventory  |
+  | Collection |                  |                   | Collection |
+  +------------+                  |                   +------------+
+        ^                         | NETCONF, I2RS, SNMP,    ^ 
+        |                         | CLI, TL1, ...           |  
+        +-------------------------+-------------------------+  
+        |                         |                         |  
+        |                         |                         |
++----------------+        +----------------+       +----------------+
+| Network Element|        | Network Element|       | Network Element|
+| +------------+ |<-LLDP->| +------------+ |<-LMP->| +------------+ |
+| | Data Model | |        | | Data Model | |       | | Data Model | |
+| +------------+ |        | +------------+ |       | +------------+ |
++----------------+        +----------------+       +----------------+
+       ]]></artwork>
+      </figure>
+
+      <t><xref target="fig_current_network_reference"/> shows how current
+      management interfaces such as NETCONF, SNMP, CLI, etc. are used to
+      transmit or receive information to/from various Network Elements. The
+      figure also shows that protocols such as LLDP and LMP participate in
+      topology discovery, specifically to discover adjacent network
+      elements.</t>
+
+      <t>The following sections describe the "Statistics Collection" and
+      "Inventory Collection" functions.</t>
+
+      <section title="Statistics Collection">
+	<t>In <xref target="fig_current_network_reference"/>, "Statistics
+	Collection" is a dedicated infrastructure that collects statistics from
+	Network Elements. It periodically polls Network Elements (for example,
+	every 5-minutes) for octets transferred per interface, per LSP,
+	etc. Collected statistics are stored and collated, (for example, to
+	provide hourly, daily, weekly 95th-percentile figures), within the
+	statistics data warehouse. Applications typically query the statistics
+	data warehouse rather than poll Network Elements directly to get the
+	appropriate set of link utilization figures for their analysis.</t>
+      </section>
+
+      <section title="Inventory Collection">
+	<t>"Inventory Collection" is a network function responsible for
+	collecting network element component and state (i.e.: interface up/down,
+	SFP/XFP optics inserted into physical port, etc.) information directly
+	from network elements, as well as storing inventory information about
+	physical network assets that are not retrievable from network elements,
+	(hereafter referred to as a inventory asset database). Inventory
+	Collection from network elements commonly use SNMP and CLI to acquire
+	inventory information. The information housed in the Inventory Manager
+	is retrieved by applications using a variety of protocols: SQL, RPC,
+	etc. Inventory information, retrieved from Network Elements, is updated
+	in the Inventory Collection system on a periodic basis to reflect
+	changes in the physical and/or logical network assets. The polling
+	interval to retrieve updated information is varied depending on scaling
+	constraints of the Inventory Collection systems and expected intervals
+	at which changes to the physical and/or logical assets are expected to
+	occur.</t>
+
+	<t>Examples of changes in network inventory that need be learned by the
+	Inventory Collection function are as follows:
+	<list style="symbols">
+          <t>Discovery of new Network Elements. These elements may or may not
+          be actively used in the network (i.e.: provisioned but not yet
+          activated).</t>
+
+          <t>Insertion or removal of line cards or other modules, i.e.: optics
+          modules, during service or equipment provisioning.</t>
+
+          <t>Changes made to a specific Network Element through a management
+          interface by a field technician. </t>
+
+          <t>Indication of an NE's physical location and associated cable run
+          list, at the time of installation.</t>
+
+          <t>Insertion of removal of cables that result in dynamic discovery
+          of a new or lost adjacent neighbor, etc.</t>
+        </list></t>
+      </section>
+
+      <section title="Requirements Language">
+        <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+        "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+        document are to be interpreted as described in <xref
+        target="RFC2119">RFC 2119</xref></t>
+      </section>
+    </section>
+
+    <section anchor="terminology" title="Terminology">
+      <t>The following briefly defines some of the terminology used within
+      this document. <list style="hanging">
+          <t hangText="Inventory Manager:"> Describes a function of collecting
+          network element inventory and state information directly from network
+          elements, and potentially associated offline inventory databases, via
+          standards-based data models. Components contained in this super set
+          might be visible or invisible to a specific network layer, i.e.: a
+          physical link is visible within the IGP, however the Layer-2 switch
+          through which the physical link traverses is unknown to the Layer-3
+          IGP. .</t>
+
+          <t hangText="Policy Manager:"> Describes a function of attaching
+          metadata to network components/attributes. Such metadata is likely to
+          include security, routing, L2 VLAN ID, IP numbering, etc. policies
+          that enable the Topology Manager to: a) assemble a normalized view of
+          the network for clients to access; b) allow clients (or, upper-layer
+          applications) access to information collected from various network
+          layers and/or network components, etc. The Policy Manager function may
+          be a sub-component of the Topology Manager or it may be a
+          standalone. This will be determined as the work with I2RS evolves.</t>
+
+          <t hangText="Topology Manager:"> Network components (inventory, etc.)
+          are retrieved from the Inventory Manager and synthesized with
+          information from the Policy Manager into cohesive, normalized views of
+          network layers. The Topology Manager exposes normalized views of the
+          network via standards-based data models to Clients, or higher-layer
+          applications, to act upon in a read-only and/or read-write
+          fashion. The Topology Manager may also push information back into the
+          Inventory Manager and/or Network Elements to execute changes to the
+          network's behavior, configuration or state.</t>
+
+          <t hangText="Orchestration Manager:"> Describes a function of
+          stitching together resources (i.e.: compute, storage) and/or services
+          with the network or vice-versa. The Orchestration Manager relies on
+          the capabilities provided by the other "Managers" listed above in
+          order to realize a complete service.</t>
+
+          <t hangText="Normalized Topology Data Model:"> A data model that is
+          constructed and represented using an open, standards-based model that
+          is consistent between implementations.</t>
+
+          <t hangText="Data Model Abstraction:"> The notion that one is able to
+          represent the same set of elements in a data model at different levels
+          of "focus" in order to limit the amount of information exchanged in
+          order to convey this information.</t>
+
+          <t hangText="Multi-Layer Topology:"> Topology is commonly referred to
+          using the OSI protocol layering model. For example, Layer 3 represents
+          routed topologies that typically use IPv4 or IPv6 addresses. It is
+          envisioned that, eventually, multiple layers of the network may be
+          represented in a single, normalized view of the network to certain
+          applications, (i.e.: Capacity Planning, Traffic Engineering, etc.)</t>
+
+          <t hangText="Network Element (NE):">  refers to a network device
+          that typically is addressable (but not always), or a host. It is
+          sometimes referred to as a 'Node'.</t>
+
+          <t hangText="Links:"> Every NE contains at least 1 link. These are
+          used to connect the NE to other NEs in the network. Links may be in a
+          variety of states including up, down, administratively down,
+          internally testing, or dormant. Links are often synonymous with
+          network ports on NEs.</t>
+        </list></t>
+    </section>
+
+    <section anchor="overview"
+             title="Orchestration, Collection &amp; Presentation Framework">
+      <section title="Overview">
+
+	<t><xref target="intro"/> demonstrates the need for a network function
+	that would provide a common, standard-based topology view to
+	applications. Such topology collection/management/presentation function
+	would be a part wider framework, that would also include policy
+	management and orchestration. The framework is shown in <xref
+	target="fig_topo_mgr"/>.</t>
+
+        <figure anchor="fig_topo_mgr" title="Topology Manager">
+          <artwork align="center"><![CDATA[
+                            +---------------+
+                         +----------------+ |
+                         |  Applications  |-+
+                         +----------------+
+                                 ^ Websockets, ReST, XMPP, I2RS, ...
+       +-------------------------+-------------------------+
+       |                         |                         |
+  +------------+     +-------------------------+     +-------------+
+  |   Policy   |<----|    Topology Manager     |---->|Orchestration|
+  |   Manager  |     | +---------------------+ |     |   Manager   |
+  +------------+     | | Topology Data Model | |     +-------------+
+                     | +---------------------+ |
+                     +-------------------------+ 
+                               ^  ^  ^
+    Websockets, ReST, XMPP     #  |  *    Websockets, ReST, XMPP
+        ########################  |  ************************
+        #                         |                         *
+  +------------+                  |                  +------------+
+  | Statistics |                  |                  | Inventory  |
+  | Collection |                  |                  | Collection |
+  +------------+                  |                  +------------+
+        ^                         | I2RS, NETCONF, SNMP,    ^
+        |                         | TL1 ...                 |
+        +-------------------------+-------------------------+
+        |                         |                         |
+        |                         |                         |
++----------------+        +----------------+       +----------------+
+| Network Element|        | Network Element|       | Network Element|
+| +------------+ |<-LLDP->| +------------+ |<-LMP->| +------------+ |
+| | Data Model | |        | | Data Model | |       | | Data Model | |
+| +------------+ |        | +------------+ |       | +------------+ |
++----------------+        +----------------+       +----------------+
+        ]]></artwork>
+        </figure>
+
+	<t>The following sections describe in detail the Topology Manager,
+	Policy Manager and Orchestration Manager functions.</t>
+      </section>
+
+      <section anchor="topology_manager" title="Topology Manager">
+        <t>The Topology Manager is responsible for retrieving topological
+        information from the network via a variety of sources. The first most
+        obvious source is the "live" IGP or an equivalent mechanism.  "Live" IGP
+        provides information about links that are components of the active
+        topology, in other words links that are present in the Link State
+        Database (LSDB) and are eligible for forwarding. The second source of
+        topology information is the Inventory Collection system, which provides
+        information for network components not visible within the IGP's LSDB,
+        (i.e.: links or nodes, or properties of those links or nodes, at lower
+        layers of the network). The third source source of topology information
+        is the Statistics Collection system, which provides traffic information
+        (traffic demands, link utilizations, etc.).</t>
+
+        <t>The Topology Manager will synthesize retrieved information into
+        cohesive, abstracted views of the network using a standards-based,
+        normalized topology data model. The Topology Manager can then expose
+        these data models to Clients, or higher-layer applications using a
+        northbound interface, which would be a protocol/API commonly used by
+        higher-layer applications to retrieve and update information. Examples
+        of such protocols are ReST, Websockets, or XMPP. Topology Manager's
+        clients would be able to act upon the information in a read-only and/or
+        read-write fashion, (based on policies defined within the Policy
+        Manager).</t>
+
+        <t>It is envisioned that the Topology Manager will ultimately contain
+        topology information for multiple layers of the network: Transport,
+        Ethernet and IP/MPLS as well as multiple (IGP) areas and/or multiple
+        Autonomous Systems (ASes). This allows the Topology Manager to stitch
+        together a holistic view of several layers of the network, which is an
+        important requirement, particularly for upper-layer Traffic
+        Engineering, Capacity Planning and Provisioning Clients (applications)
+        used to design, augment and optimize IP/MPLS networks that require
+        knowledge of underlying Shared Risk Link Groups (SRLG) within the
+        Transport and/or Ethernet layers of the network.</t>
+
+        <t>The Topology Manager must have the ability to discover and
+        communicate with network elements who are not only active and visible
+        within the Link State Database (LSDB) of an active IGP, but also
+        network elements who are active, but invisible to a LSDB (e.g.: L2
+        Ethernet switches, ROADM's, etc.) that are part of the underlying
+        Transport network. This requirement will influence the choice of
+        protocols needed by the Topology Manager to communicate to/from
+        network elements at the various network layers.</t>
+
+        <t>It is also important to recognize that the Topology Manager will be
+        gleaning not only (relatively) static inventory information from the
+        Inventory Manager, i.e.: what linecards, interface types, etc. are
+        actively inserted into network elements, but also dynamic inventory
+        information, as well. With respect to the latter, network elements are
+        expected to rely on various Link Layer Discovery Protocols (i.e.:
+        LLDP, LMP, etc.) that will aid in automatically identifying an
+        adjacent node, port, etc. at the far-side of a link. This information
+        is then pushed to or pulled by the Topology Manager in order for it to
+        have an accurate representation of the physical topology of the
+        network. </t>
+      </section>
+
+      <!-- EO topology_manager -->
+
+      <section anchor="policy_manager" title="Policy Manager">
+        <t>The Policy Manager is the function used to enforce and program
+        policies applicable to network component/attribute data. Policy
+        enforcement is a network-wide function that can be consumed by various
+        network elements and services including the Inventory Manager,
+        Topology Manager or other network elements. Such policies are likely
+        to encompass the following. <list style="symbols">
+            <t>Logical Identifier Numbering Policies <list style="symbols">
+                <t>Correlation of IP prefix to link based on type of link
+                (P-P, P-PE, PE-CE, etc.)</t>
+
+                <t>Correlation of IP Prefix to IGP Area</t>
+
+                <t>Layer-2 VLAN ID assignments, etc.</t>
+              </list></t>
+
+            <t>Routing Configuration Policies <list style="symbols">
+                <t>OSPF Area or IS-IS Net-ID to Node (Type) Correlation</t>
+
+                <t>BGP routing policies, i.e.: nodes designated for injection
+                of aggregate routes, max-prefix policies, AFI/SAFI to node
+                correlation, etc.</t>
+              </list></t>
+
+            <t>Security Policies <list style="symbols">
+                <t>Access Control Lists</t>
+
+                <t>Rate-limiting</t>
+              </list></t>
+
+            <t>Network Component/Attribute Data Access Policies. Client's
+            (upper-layer application) read-only or read-write access to
+            Network Components/Attributes contained in the "Inventory Manager"
+            as well as Policies contained within the "Policy Manager"
+            itself.</t>
+          </list></t>
+
+        <t>The Policy Manager function may be a sub-component of the Topology
+        or Orchestration Manager or it may be a standalone. This will be
+        determined as the work with I2RS evolves.</t>
+      </section>
+
+      <!-- EO policy_manager -->
+
+      <section anchor="orchestrator_manager" title="Orchestration Manager">
+        <t>The Orchestration Manager provides the ability to stitch together
+        resources (i.e.: compute, storage) and/or services with the network or
+        vice-versa. Examples of 'generic' services may include the following:
+        <list style="symbols">
+            <t>Application-specific Load Balancing</t>
+
+            <t>Application-specific Network (Bandwidth) Optimization</t>
+
+            <t>Application or End-User specific Class-of-Service</t>
+
+            <t>Application or End-User specific Network Access Control</t>
+          </list></t>
+
+        <t>The above services could then enable coupling of resources with the
+        network to realize the following: <list style="symbols">
+            <t>Network Optimization: Creation and Migration of Virtual
+            Machines (VM's) so they are adjacent to storage in the same
+            DataCenter.</t>
+
+            <t>Network Access Control: Coupling of available (generic) compute
+            nodes within the appropriate point of the data-path to perform
+            firewall, NAT, etc. functions on data traffic.</t>
+          </list></t>
+
+        <t>The Orchestration Manager is expected to exchange data models with
+        the Topology Manager, Policy Manager and Inventory Manager functions.
+        In addition, the Orchestration Manager is expected to support publish
+        and subscribe capabilities to those functions, as well as to Clients,
+        to enable scalability with respect to event notifications.</t>
+
+        <t>The Orchestration Manager may receive requests from Clients
+        (applications) for immediate access to specific network resources.
+        However, Clients may request to schedule future appointments to
+        reserve appropriate network resources when, for example, a special
+        event is scheduled to start and end.</t>
+
+        <t>Finally, the Orchestration Manager should have the flexibility to
+        determine what network layer(s) may be able to satisfy a given
+        Client's request, based on constraints received from the Client as
+        well as those constraints learned from the Policy and/or Topology
+        Manager functions. This could allow the Orchestration Manager to, for
+        example, satisfy a given service request for a given Client using the
+        optical network (via OTN service) if there is insufficient IP/MPLS
+        capacity at the specific moment the Client's request is received.</t>
+
+        <t>The operational model is shown in the following figure.</t>
+
+        <figure anchor="fig_orchestration_figure"
+                title="Overall Reference Model">
+          <artwork align="center"><![CDATA[
+TBD.
+  ]]></artwork>
+        </figure>
+      </section>
+    </section>
+
+    <!-- Overview -->
+
+    <section anchor="use_cases" title="Use Cases">
+      <section anchor="virtual_view" title="Virtualized Views of the Network">
+        <section anchor="capacity_planning"
+                 title="Capacity Planning and Traffic Engineering">
+          <t>When performing Traffic Engineering and/or Capacity Planning of
+          an IP/MPLS network, it is important to account for SRLG's that exist
+          within the underlying physical, optical and Ethernet networks.
+          Currently, it's quite common to create and/or take "snapshots", at
+          infrequent intervals, that comprise the inventory data of the
+          underlying physical and optical layer networks. This inventory data
+          then needs to be massaged or normalized to conform to the data
+          import requirements of sometimes separate Traffic Engineering and/or
+          Capacity Planning tools. This process is error-prone and
+          inefficient, particularly as the underlying network inventory
+          information changes due to introduction of, for example, new network
+          element makes or models, linecards, capabilities, etc. at the
+          optical and/or Ethernet layers of the underlying network.</t>
+
+          <t>This is inefficient with respect to the time and expense consumed
+          by software developer, Capacity Planning and Traffic Engineering
+          resources to normalize and sanity check underlying network inventory
+          information, before it can be consumed by IP/MPLS Capacity Planning
+          and Traffic Engineering applications. Due to this inefficiency, the
+          underlying physical network inventory information, (containing SRLG
+          and corresponding critical network asset information), used by the
+          IP/MPLS Capacity Planning and TE applications is not updated
+          frequently, thus exposing the network to, at minimum, inefficient
+          utilization and, at worst, critical impairments.</t>
+
+          <t>An Inventory Manager function is required that will, first,
+          extract inventory information from network elements -- and
+          potentially associated offline inventory databases to acquire
+          physical cross-connects and other information that is not available
+          directly from network elements -- at the physical, optical, Ethernet
+          and IP/MPLS layers of the network via standards-based data models.
+          Data models and associated vocabulary will be required to represent
+          not only components inside or directly connected to network
+          elements, but also to represent components of a physical layer path
+          (i.e.: cross-connect panels, etc.) The aforementioned inventory will
+          comprise the complete set of inactive and active network
+          components.</t>
+
+          <t>A Statistics Collection Function is also required. As stated above,
+          it will collect utilization statistics from Network Elements, archive
+          and aggregate them in a statistics data warehouse. Selected statistics
+          and other dynamic data may be distributed through IGP routing
+          protocols (<xref target="I-D.previdi-isis-te-metric-extensions"/> and
+          <xref target="I-D.ietf-ospf-te-metric-extensions"/>) and then
+          collected at the Statistics Collection Function via BGP-LS (<xref
+          target="I-D.ietf-idr-ls-distribution"/>).  Summaries of these figures
+          then need to be exposed in normalized data models to the Topology
+          Manager so it can easily acquire historical link and LSP utilization
+          figures that can be used to, for example, build trended utilization
+          models to forecast expected changes to the physical and/or logical
+          network components to accommodate network growth.</t>
+
+          <t>The Topology Manager function may then augment the Inventory
+          Manager information by communicating directly with Network Elements
+          to reveal the IGP-based view of the active topology of the network.
+          This will allow the Topology Manager to include dynamic information
+          from the IGP, such as Available Bandwidth, Reserved Bandwidth, etc.
+          Traffic Engineering (TE) attributes associated with links, contained
+          with the Traffic Engineering Database (TED) on Network Elements.</t>
+
+          <t>It is important to recognize that extracting topology information
+          from the network solely via an IGP, (such as IS-IS TE or OSPF TE),
+          is inadequate for this use case. First, IGP's only expose the active
+          components (e.g. vertices of the SPF tree) of the IP network;
+          unfortunately, they are not aware of "hidden" or inactive interfaces
+          within IP/MPLS network elements, (e.g.: unused linecards or unused
+          ports), or components that reside at a lower layer than IP/MPLS,
+          e.g. Ethernet switches, Optical transport systems, etc. This occurs
+          frequently during the course of maintenance, augment and
+          optimization activities on the network. Second, IGP's only convey
+          SRLG information that have been first applied within the router's
+          configurations, either manually or programatically. As mentioned
+          previously, this SRLG information in the IP/MPLS network is subject
+          to being infrequently updated and, as a result, may inadequately
+          account for critical, underlying network fate sharing properties
+          that are necessary to properly design resilient circuits and/or
+          paths through the network.</t>
+
+          <t>In this use case, the Inventory Manager will need to be capable
+          of using a variety of existing protocols such as: NETCONF, CLI,
+          SNMP, TL1, etc. depending on the capabilities of the network
+          elements. The Topology Manager will need to be capable of
+          communicating via an IGP from a (set of) Network Elements. It is
+          important to consider that to acquire topology information from
+          Network Elements will require read-only access to the IGP. However,
+          the end result of the computations performed by the Capacity
+          Planning Client may require changes to various IGP attributes,
+          (e.g.: IGP metrics, TE link-colors, etc.) These may be applied
+          directly by devising a new capability to either: a) inject
+          information into the IGP that overrides the same information
+          injected by the originating Network Element; or, b) allowing the
+          Topology and/or Inventory Manager the ability to write changes to
+          the Network Element's configuration in order to have it adjust the
+          appropriate IGP attribute(s) and re-flood them throughout the IGP.
+          It would be desirable to have a single mechanism (data model or
+          protocol) that allows the Topology Manager to read and write IGP
+          attributes.</t>
+
+          <t>Once the Topology Manager function has assembled a normalized view
+          of the topology and synthesized associated metadata with each
+          component of the topology (link type, link properties, statistics,
+          intra-layer relationships, etc.), it can then expose this information
+          via its northbound API to Clients. In this use case that means
+          Capacity Planning and Traffic Engineering applications, which are not
+          required to know innate details of individual network elements, but do
+          require generalized information about the node and links that comprise
+          the network, e.g.: links used to interconnect nodes, SRLG information
+          (from the underlying network), utilization rates of each link over
+          some period of time, etc. In this case, it is important that any
+          Client that understands both the web services API and the normalized
+          data model can communicate with the Topology Manager in order to
+          understand the network topology information that was provided by
+          network elements from potentially different vendors, all of which
+          likely represent that topology information internally using different
+          models. If the Client had gone directly to the network elements
+          themselves, it would have to translate and then normalize these
+          different representations for itself. However, in this case, the
+          Topology Manager has done that for it.</t>
+
+          <t>When this information is consumed by the Traffic Engineering
+          application, it may run a variety of CSPF algorithms the result of
+          which is likely a list of RSVP LSP's that need to be
+          (re-)established, or torn down, in the network to globally optimize
+          the packing efficiency of physical links throughout the network. The
+          end result of the Traffic Engineering application is "pushing" out
+          to the Topology Manager, via a standard data model to be defined
+          here, a list of RSVP LSP's and their associated characteristics,
+          (i.e.: head and tail-end LSR's, bandwidth, priority, preemption,
+          etc.). The Topology Manager then would consume this information and
+          carry out those instructions by speaking directly to network
+          elements, perhaps via PCEP Extensions for Stateful PCE <xref
+          target="I-D.ietf-pce-stateful-pce"/>, which in turn initiates RSVP
+          signaling through the network to establish the LSP's.</t>
+
+          <t>After this information is consumed by the Capacity Planning
+          application, it may run a variety of algorithms the result of which
+          is a list of new inventory that is required to be purchased (or,
+          redeployed) as well as associated work orders for field technicians
+          to augment the network for expected growth. It would be ideal if
+          this information was also "pushed" back into the Topology and, in
+          turn, Inventory Manager as "inactive" links and/or nodes, so that as
+          new equipment is installed it can be automatically correlated with
+          original design and work order packages associated with that
+          augment.</t>
+        </section>
+
+        <!-- EO capacity_planning -->
+
+        <section anchor="service_provisioning" title="Services Provisioning">
+          <t>Beyond Capacity Planning and Traffic Engineering applications,
+          having a normalized view of just the IP/MPLS layer of the network is
+          still very important for other mission critical applications such as
+          Security Auditing and IP/MPLS Services Provisioning, (e.g.: L2VPN,
+          L3VPN, etc.). With respect to the latter, these types of
+          applications should not need a detailed understanding of, for
+          example, SRLG information, assuming that the underlying MPLS Tunnel
+          LSP's are known to account for the resiliency requirements of all
+          services that ride over them. Nonetheless, for both types of
+          applications it is critical that they have a common and up-to-date
+          normalized view of the IP/MPLS network in order to easily
+          instantiate new services at the appropriate places in the network,
+          in the case of VPN services, or validate that ACL's are configured
+          properly to protect associated routing, signaling and management
+          protocols on the network, with respect to Security Auditing.</t>
+
+          <t>For this use case, what is most commonly needed by a VPN Service
+          Provisioning application is as follows. First, Service PE's need to
+          be identified in all markets/cities where the customer has
+          identified they want service. Next, does their exist one, or more,
+          Servies PE's in each city with connectivity to the access
+          network(s), e.g.: SONET/TDM, used to deliver the PE-CE tail circuits
+          to the Service's PE. Finally, does the Services PE have available
+          capacity on both the PE-CE access interface and its uplinks to
+          terminate the tail circuit? If this were to be generalized, this
+          would be considered an Resource Selection function. Namely, the VPN
+          Provisioning application would iteratively query the Topology
+          Manager to narrow down the scope of resources to the set of Services
+          PE's with the appropriate uplink bandwidth and access circuit
+          capability plus capacity to realize the requested VPN service. Once
+          the VPN Provisioning application has a candidate list of resources
+          it then requests the Topology Manager to go about configuring the
+          Services PE's and associated access circuits to realize the
+          customer's VPN service.</t>
+        </section>
+
+        <!-- service_provisioning -->
+
+	<!--
+        <section anchor="rapid-renumbering"
+                 title="Rapid IP Renumbering, AS Migration">
+          <t>A variety of reasons exist for the "rapid renumbering" of
+          IPv4/IPv6 prefixes and ASN's in an IP/MPLS network. Perhaps the most
+          common reason is as a result of mergers, acquisitions or
+          divestitures of companies, organizations or divisions.</t>
+
+          <t>Inside the network of an Enterprise or Service Provider, there
+          already exist protocols such as DHCP or SLAAC to support rapid
+          renumbering of hosts, (i.e.: servers, laptops, tablets, etc.). These
+          are outside the scope of this document. However, there still exists
+          a critical need to quickly renumber network infrastructure, namely:
+          router interfaces, management interfaces, etc. in order to: a) avoid
+          overlapping RFC 1918 addresses in previously separate domains; b)
+          allow for (better) aggregation of IP prefixes within areas/domains
+          of an IGP; c) allow for more efficient utilization of globally
+          unique IPv4 addresses, which are in limited supply; d) realize
+          business synergies of combining two different AS'es into one,
+          etc.</t>
+
+          <t>The set of IPv4 and IPv6 prefixes that have been configured on
+          point-to-point, LAN, Loopback, Tunnel, Management, PE-CE and other
+          interfaces would be gathered from all network elements by the
+          Inventory Manager function. Similarly, the set of ASN's that have
+          been configured on individual NE's, as the global BGP Autonomous
+          System Number, and the PE-CE interfaces is also acquired from the
+          Inventory Manager. Afterward, an "inventory" report of the total
+          number, based on type, of IPv4/IPv6 prefixes could be quickly
+          assembled to understand how much address space is required to
+          accommodate the existing network, but also future growth plans.
+          Next, a new IP prefix and ASN would be assigned to the overall
+          network. An operator may then decide to manually carve up the IP
+          prefix into sub-prefixes that are assigned to various functions or
+          interface types in the network, i.e.: all Loopback interface
+          addresses are assigned from a specific GUA IPv4/IPv6 prefix. Other
+          rules may be crafted by the operator so that, for example, GUA
+          IPv4/IPv6 prefixes for interfaces within each IGP area are assigned
+          out of contiguous address space so that they may be (easily)
+          summarized within the IGP configuration. Finally, the set of ASN's,
+          IP prefixes, rules and/or policies governing how their are to be
+          assigned are encoded in a data model/schema an sent to a Topology
+          Manager (TM). The Topology Manager is then responsible for
+          communicating changes to the Inventory Manager and/or Network
+          Elements in a proper sequence, or order of operations, so as to not
+          lose network connectivity from the Topology Manager to the network
+          elements.</t>
+
+          <t>This function could be extended further whereby the Orchestration
+          Manager would be used in order to automatically create a list of IP
+          addresses and their associated DNS names, which would then be
+          "pushed" to Authoritative DNS servers so that interface names would
+          get updated in DNS automatically. In addition, the Orchestration
+          Manager function could notify a "Infrastructure Security"
+          application that IP prefixes on the network has changed so that it
+          then updates ACL's used to, for example, protect IP/MPLS routing and
+          signaling protocols used on the network.</t>
+        </section>
+	-->
+
+        <section anchor="troubleshooting_monitoring"
+                 title="Troubleshooting &amp; Monitoring">
+          <t>Once the Topology Manager has a normalized view of several layers
+          of the network, it's then possible to more easily expose a richer
+          set of data to network operators when performing diagnosis,
+          troubleshooting and repairs on the network. Specifically, there is a
+          need to (rapidly) assemble a current, accurate and comprehensive
+          network diagram of a L2VPN or L3VPN service for a particular
+          customer when either: a) attempting to diagnose a service
+          fault/error; or, b) attempting to augment the customer's existing
+          service. Information that may be assembled into a comprehensive
+          picture could include physical and logical components related
+          specifically to that customer's service, i.e.: VLAN's or channels
+          used by the PE-CE access circuits, CoS policies, historical PE-CE
+          circuit utilization, etc. The Topology Manager would assemble this
+          information, on behalf of each of the network elements and other
+          data sources in and associated with the network, and could present
+          this information in a vendor-independent data model to applications
+          to be displayed allowing the operator (or, potentially, the customer
+          through a SP's Web portal) to visualize the information.</t>
+        </section>
+      </section>
+
+      <!-- EO normalized_view -->
+
+      <section anchor="pce" title="Path Computation Element (PCE)">
+        <t>As described in <xref target="RFC4655"/> a PCE can be used to
+        compute MPLS-TE paths within a "domain" (such as an IGP area) or
+        across multiple domains (such as a multi-area AS, or multiple ASes).
+        <list style="symbols">
+            <t>Within a single area, the PCE offers enhanced computational
+            power that may not be available on individual routers,
+            sophisticated policy control and algorithms, and coordination of
+            computation across the whole area.</t>
+
+            <t>If a router wants to compute a MPLS-TE path across IGP areas
+            its own TED lacks visibility of the complete topology. That means
+            that the router cannot determine the end-to-end path, and cannot
+            even select the right exit router (Area Border Router - ABR) for
+            an optimal path. This is an issue for large-scale networks that
+            need to segment their core networks into distinct areas, but which
+            still want to take advantage of MPLS-TE.</t>
+          </list></t>
+
+        <t>The PCE presents a computation server that may have visibility into
+        more than one IGP area or AS, or may cooperate with other PCEs to
+        perform distributed path computation. The PCE needs access to the
+        topology and the Traffic Engineering Database (TED) for the area(s) it
+        serves, but <xref target="RFC4655"/> does not describe how this is
+        achieved. Many implementations make the PCE a passive participant in
+        the IGP so that it can learn the latest state of the network, but this
+        may be sub-optimal when the network is subject to a high degree of
+        churn, or when the PCE is responsible for multiple areas.</t>
+
+        <t>The following figure shows how a PCE can get its TED information
+        using a Topology Server.</t>
+
+        <figure anchor="PCE-REFERENCE" title="Topology use case: Path Computation Element ">
+          <artwork align="center"><![CDATA[
+             +----------+                           
+             |  -----   | TED synchronization via Topology API                        
+             | | TED |<-+----------------------------------+
+             |  -----   |                                  |
+             |    |     |                                  |         
+             |    |     |                                  |
+             |    v     |                                  |
+             |  -----   |                                  |
+             | | PCE |  |                                  |
+             |  -----   |                                  |
+             +----------+                                  |
+                  ^                                        |
+                  | Request/                               |
+                  | Response                               |
+                  v                                        |
+    Service  +----------+   Signaling  +----------+   +----------+
+    Request  | Head-End |   Protocol   | Adjacent |   | Topology |
+    -------->|  Node    |<------------>|   Node   |   | Manager  |
+             +----------+              +----------+   +----------+
+	  ]]></artwork>
+        </figure>
+      </section>
+
+      <section anchor="alto" title="ALTO Server">
+        <t>An ALTO Server <xref target="RFC5693"/> is an entity that generates
+        an abstracted network topology and provides it to network-aware
+        applications over a web service based API. Example applications are
+        p2p clients or trackers, or CDNs. The abstracted network topology
+        comes in the form of two maps: a Network Map that specifies allocation
+        of prefixes to PIDs, and a Cost Map that specifies the cost between
+        PIDs listed in the Network Map. For more details, see <xref
+        target="I-D.ietf-alto-protocol"/>.</t>
+
+        <t>ALTO abstract network topologies can be auto-generated from the
+        physical topology of the underlying network. The generation would
+        typically be based on policies and rules set by the operator. Both
+        prefix and TE data are required: prefix data is required to generate
+        ALTO Network Maps, TE (topology) data is required to generate ALTO
+        Cost Maps. Prefix data is carried and originated in BGP, TE data is
+        originated and carried in an IGP. The mechanism defined in this
+        document provides a single interface through which an ALTO Server can
+        retrieve all the necessary prefix and network topology data from the
+        underlying network. Note an ALTO Server can use other mechanisms to
+        get network data, for example, peering with multiple IGP and BGP
+        Speakers.</t>
+
+        <t>The following figure shows how an ALTO Server can get network
+        topology information from the underlying network using the Topology
+        API.</t>
+
+        <figure anchor="ALTO-REFERENCE"
+                title="Topology use case: ALTO Server">
+          <artwork align="center"><![CDATA[
+  +--------+
+  | Client |<--+
+  +--------+   |                  
+               |    ALTO    +--------+                  +----------+
+  +--------+   |  Protocol  |  ALTO  | Network Topology | Topology |  
+  | Client |<--+------------| Server |<-----------------| Manager  | 
+  +--------+   |            |        |                  |          |
+               |            +--------+                  +----------+
+  +--------+   |
+  | Client |<--+
+  +--------+           
+	  ]]></artwork>
+        </figure>
+      </section>
+    </section>
+
+    <!-- This PI places the pagebreak correctly (before the section title) in
+         the text output. -->
+
+    <?rfc needLines="8" ?>
+
+    <section anchor="Acknowledgements" title="Acknowledgements">
+      <t>The authors wish to thank Alia Atlas, Dave Ward, Hannes Gredler,
+      Stafano Previdi for their valuable contributions and feedback to this
+      draft.</t>
+    </section>
+
+    <!-- Possibly a 'Contributors' section ... -->
+
+    <section anchor="IANA" title="IANA Considerations">
+      <t>This memo includes no request to IANA.</t>
+    </section>
+
+    <section anchor="Security" title="Security Considerations">
+      <t>At the moment, the Use Cases covered in this document apply
+      specifically to a single Service Provider or Enterprise network.
+      Therefore, network administrations should take appropriate precautions
+      to ensure appropriate access controls exist so that only internal
+      applications and end-users have physical or logical access to the
+      Topology Manager. This should be similar to precautions that are already
+      taken by Network Administrators to secure their existing Network
+      Management, OSS and BSS systems.</t>
+
+      <t>As this work evolves, it will be important to determine the
+      appropriate granularity of access controls in terms of what individuals
+      or groups may have read and/or write access to various types of
+      information contained with the Topology Manager. It would be ideal, if
+      these access control mechanisms were centralized within the Topology
+      Manager itself.</t>
+    </section>
+  </middle>
+
+  <!--  *****BACK MATTER ***** -->
+
+  <back>
+    <!-- References split into informative and normative -->
+
+    <!-- There are 2 ways to insert reference entries from the
+    citation libraries: 1. define an ENTITY at the top, and use
+    "ampersand character"RFC2629; here (as shown) 2. simply use a PI
+    "less than character"?rfc include="reference.RFC.2119.xml"?> here
+    (for I-Ds:
+    include="reference.I-D.narten-iana-considerations-rfc2434bis.xml")
+    
+    Both are cited textually in the same manner: by using xref
+    elements.  If you use the PI option, xml2rfc will, by default, try
+    to find included files in the same directory as the including
+    file. You can also define the XML_LIBRARY environment variable
+    with a value containing a set of directories to search.  These can
+    be either in the local filing system or remote ones accessed by
+    http (http://domain/dir/... ).-->
+
+    <references title="Normative References">
+      &rfc2119;
+    </references>
+
+    <references title="Informative References">
+      <!-- Here we use entities that we defined at the beginning. -->
+
+      &rfc4655;
+
+      &rfc5693;
+
+      &I-D.ietf-pce-stateful-pce-02;
+
+      &I-D.ietf-alto-protocol;
+
+      &I-D.ward-irs-framework;
+
+      &I-D.atlas-irs-problem-statement;
+
+      &I-D.previdi-isis-te-metric-extensions;
+
+      &I-D.ietf-ospf-te-metric-extensions;
+
+      &I-D.ietf-idr-ls-distribution;
+
+
+    </references>
+
+    <!-- Change Log
+
+v00 2021-07-17  Initial version; we may not need this
+    
+    end of Change log -->
+  </back>
+</rfc>
+<!-- Random thoughts
+	
+	
+	<t>The deployment architecture of the Topology Manager can be one of a
+	single, monolithic server that resides as its own process or even
+	within a NE. Other deployment scenarios could have a well known
+	address assigned to a central Topology manager for a domain that
+	gathers information from other Topology managers residing in NEs or
+	independently. It is important to support all of these architectural
+	incarnations. It is also importnat to consider in all of these cases,
+	just how the non-LSDB information gets to and from the topology
+	manager that any given Client application will talk to. This is
+	important so that any one topology manager either has a complete
+	picture of the network topology, or is able to redirect a Client to a
+	place that does. These considerations are also important in
+	intra-domain and intra-administrative domain cases, which are not
+	covered in this document.</t>
+
+
+    <section title="Requirements Parking Lot">
+      <t>Requirements in this section will be moved to the requirements
+      draft.</t>
+    
+      <t>The most critical needs of new Internet Routing System (I2RS) are:
+      <list style="symbols">
+          <t>A common vocabulary that describes attributes associated with
+          topological components of a network. This is more commonly referred
+          to as a "normalized" topology.</t>
+    
+          <t>A data model that describes the topological components
+          represented by the Topology Manager service. This data model will be
+          written using a common vocabulary, that allows one to assemble the
+          components of a network topology so that one can, for example,
+          describe a physical link and all of its associated physical layer
+          attributes such as: media type, bandwidth, MTU, etc.</t>
+    
+          <t>Another key attribute of the data model is as a means of topology
+          abstraction, allowing clients that consume the information to do so
+          in a constrained manner. For example, one wishing to view the
+          interfaces and nodes present in a sub-graph of the layer 3 topology
+          should be able to specify an interest in this subset of information
+          rather than having to read out and parse through the entire set of
+          links and nodes.</t>
+    
+          <t>Multi-layer grouping of elements is needed as a means of grouping
+          different nodes and links into "network layers". For example, links
+          with IPv4 addresses might represent layer 3 of the network topology
+          while links with Ethernet MAC addresses might represent layer 2.
+          Furthermore, virtual private networks can be represented using this
+          grouping mechanism.</t>
+    
+          <t>Association between components of different layers is needed as a
+          means of indicating relationships (i.e.: dependency, stacking,
+          etc...) between components where layers are associated. For example,
+          a layer 2 port might have several IPv4 or IPv6 interfaces that
+          utilize it. These would be represented as associations to and from
+          these components.</t>
+    
+          <t>Ultimately, these data models will be available for consumption
+          by a variety of upper layer applications (i.e.: Traffic Engineering,
+          Security Auditing, etc.) that need to obtain a common, normalized
+          view of the present network topology. Furthermore, these
+          applications may choose to publish new or changed information to
+          these data models and, ultimately, have these changes reflected in
+          the network elements to realize corresponding changes they need to
+          carry out to the topology.</t>
+    
+          <t>A mechanism for upper-layer applications to publish and subscribe
+          to a rich assortment of attributes and/or data models so that they
+          are automatically notified of changes within the network, (as a
+          result of a node failure, card insertion, etc.), as well as changes
+          made by adjacent upper-layer applications to the network, (for
+          example, addition/subtraction of physical links to the network
+          during network augmentation or optimization, etc.)</t>
+    
+          <t>A means for non-routers to communicate with the model. Until now,
+          clients that could gather network topology and inventory information
+          were generally limited to those that could speak routing protocols.
+          This document assumes the Topology Manager function provides a
+          RestFul web services interface through which non-routing protocol
+          speakers can communicate.</t>
+    
+          <t>Secure and authenticated means of communication with the Topology
+          service is needed to protect the assets of the network inventory
+          from being divulged to unauthorized parties. To this end, we
+          envision a number of mechanisms that can be utilized to this
+          end.</t>
+        </list></t>
+    
+    </section>
+
+
+
+	It is envisioned that a "Topology Module" will reside on several
+	general-purpose servers inside a network.  The Topology Module function
+	will be responsible for collecting information directly from network
+	elements, likely using a variety of existing protocols, (e.g.: YANG, SNMP,
+	etc.), and potentially new protocols depending on need for network elements
+	to publish events related
+	to changes in their inventory and/or state, (i.e.: insertion or removal of
+	line cards, state of an interface, discovery of a new adjacent neighbor, etc.)
+	A Topology Module function may be divided up
+	among several physical servers where each server subscribes to listening for
+	various events and/or actively polling the network for various types of
+	inventory information.  As the topology module 
+	
+		and/or publish to a common set of 
+	required to allow upper-layer applications 
+	
+	
+	- data model containing common vocabulary, which can in turn be exposed to applications who need to subscribe to this information as well as write information back into the data model that gets published back to the network elements.
+	
+	Once the above has been designed, it should then be possible to describe
+	whether and how existing protocols can be leveraged to read information from
+	and write information to those network elements.
+	
+	Publish/Subscribe model
+	- Ideally might be used for network element to publish events, e.g.: card insertion/removal events, toward a common messaging bus
+	- A topology applications, which builds a virtualized view of a layer of the network, can then subscribe to this messaging bus for the particular events its interested in and build an organized view of one or more layers of the network
+	
+	The topology application may then also have a publish/subscribe mechanism so that various higher order applications can then either: 
+	a) publish/subscribe to events in a near-real-time fashion; or,
+	b) on-demand pull a virtualized view of the network-layer(s) of interest and, if necessary,
+	on-demand push changes to the physical and/or logical topology to the network layer(s).
+	It's likely that various applications will have a need for both types of mechanisms, but which is chosen to be developed first or if both are developed simultaneously is outside the scope of this document.  It will be important to understand application's requirements, with respect to the time scales that they require information, e.g.: near-real-time acquisition/changes or at a more relaxed pace of days, weeks or months, (e.g.: Traffic Engineering or Capacity Planning functions/applications).
+	
+	
+	It is important to note that they
+	do not have a need to acquire information about the network directly from
+	individual network elements, but rather the fundamental requirement is
+	the need to acquire an abstract view of the network, including its
+	various physical and logical components, e.g.: physical links,
+	media characteristics of links (MTU, bandwidth), etc.  Unfortunately, today,
+	many applications must be designed to 
+	
+	It is important to recognize that each of these applications
+	have different requirements in terms of time scales that they are required
+	to operate at as well as the information they need to synthesize in order
+	that allow them to make reasonable calculations and derive an answer.
+	Unfortunately, each of these applications are required
+	to acquire and assemble, which is terribly inefficient.
+	
+	  responsible for providing this information,
+	  to various applications or consumers of the topology, using a common
+	  vocabulary to describe various aspects of a network topology.  While
+	  the ultimate intent is that the "topology module" will be capable of
+	  interacting with network elements at multiple layers of the network,
+	  (Transport, IP/MPLS, etc.), this document focuses only on IP/MPLS
+	  use cases.
+	
+	  While the intent is to interact with topology
+	  information from network elements at multiple layers of the network, Transport,
+	  Ethernet and IP/MPLS.  This document primarily focuses on use cases
+	  applicable to IP/MPLS networks; use cases at other layers of the network
+	  are for further study.
+	
+		in order to present clients
+	  with a abstract schema of the entire network that can then be acted
+	  upon by various applications.
+
+-->

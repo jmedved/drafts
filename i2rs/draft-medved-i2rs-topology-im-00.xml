@@ -1,0 +1,757 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+<?rfc toc="yes"?>
+<?rfc rfcedstyle="yes"?>
+<?rfc subcompact="no" ?>
+<?rfc symrefs="yes"?>
+<rfc category="exp" docName="draft-medved-i2rs-topology-im-00.txt" ipr="pre5378Trust200902">
+  <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
+  <?rfc toc="yes" ?>
+  <?rfc compact="yes" ?>
+  <?rfc symrefs="yes" ?>
+  <?rfc sortrefs="yes"?>
+  <?rfc iprnotified="no" ?>
+  <?rfc strict="yes" ?>
+  <front>
+    <title abbrev="draft-medved-i2rs-topology-im-00.txt">An Information Model for Network Topologies</title>
+
+    <author fullname="Jan Medved" initials="J." surname="Medved">
+      <organization>Cisco</organization>
+      <address>
+        <email>jmedved@cisco.com</email>
+      </address>
+    </author>
+    <author fullname="Nitin Bahadur" initials="N." surname="Bahadur">
+      <organization>Juniper Networks</organization>
+      <address>
+        <email>nitinb@juniper.net></email>			
+      </address>
+    </author>
+     <author fullname="Alexander Clemm" initials="A." surname="Clemm">
+      <organization>Cisco</organization>
+      <address>
+        <email>alex@cisco.com</email>
+      </address>
+    </author>
+    <author fullname="Hariharan Ananthakrishnan" initials="H." surname="Ananthakrishnan">
+      <organization>Juniper Networks</organization>
+      <address>
+        <email>hanantha@juniper.net</email>
+      </address>
+    </author>
+
+    <date day="14" month="July" year="2013"/>
+    <abstract>
+      <t>
+        This document defines the information model for network topologies.  
+      </t>
+    </abstract>
+  </front>
+  <middle>
+    <section title="Introduction">
+      <t>
+        This document introduces an information model for network topologies.
+        The model allows applications to have a holistic view of an entire
+        network.  <xref target="I-D.amante-i2rs-topology-use-cases"/> describes
+        an entity - the Topology Manager - that would create a cohesive,
+        abstracted model of the network and expose it to applications via
+        northbound API.
+      </t>
+      <t>
+        The information model can be related to a corresponding data model, for
+        example, a data model defined in YANG <xref target="RFC6020"/>, defining
+        the actual data that is exchanged across specific interfaces.  On the
+        relationship between information and data models, please refer to <xref
+        target="RFC3444"/>.
+      </t>
+      <t>
+        In order to capture information that is specific to different network
+        topology types, this document defines an abstract (basic) topology model
+        that can be extended and adapted.  As a result, the information model is
+        generic in nature and can be applied to many network topologies.
+        Applications can operate on any topology at a generic level where
+        specifics of particular topology types are not required, and at a
+        topology-specific level when those specifics come into play.  Specific
+        topology types that are covered in this document include Layer 3 Unicast
+        IGP, IS-IS, and OSPF. We also define the information model for traffic
+        engineering (TE) data. Adaptations and extensions to other types of
+        topologies (such as Layer 2 topology or OpenFlow topology) are possible,
+        using similar model patterns to the ones that are illustrated.
+      </t>
+
+      <t>
+        This revision of the document focuses on the "live" topology information
+        model (<xref target="I-D.amante-i2rs-topology-use-cases"/>, Section
+        3.2). The "inventory" and "statistics collection" information models
+        will be addressed separately.
+      </t>
+
+      <t>
+        The information model contains several components:
+        <list style="hanging">
+          <t hangText="Network-Topology">
+            contains a generic network topology model.  It defines a network
+            topology at its most general level of abstraction. It models aspects
+            such as nodes and edges that constitute a topology graph, as well as
+            termination points contained in the nodes that actually terminate
+            edges of the graph. A network can contain multiple topologies, for
+            example topologies at different network layers or overlay
+            topologies. The model therefore allows to show relationships between
+            topologies, as well as dependencies between nodes and termination
+            points across topologies.
+          </t>
+          <t hangText="L3-Unicast-IGP-Topology">
+            applies the general network topology model to Layer 3 Unicast IGP
+            topologies.  It extends the general topology with information
+            specific to Layer 3 Unicast IGP.  In doing so, it also illustrates
+            the extension patterns associated with extending respectively
+            extending the general topology model to meet the needs of a specific
+            topology.
+          </t>
+          <t hangText="OSPF-Topology">
+            Module "ospf-topology" defines a topology model for OSPF, building
+            on and extending the Layer 3 Unicast IGP topology model.  It serves
+            as an example of how the general topology model can be refined
+            across multiple levels.
+          </t>
+          <t hangText="IS-IS-Topology">
+            defines a topology model for IS-IS, again building on and extending
+            the Layer 3 Unicast IGP topology model.
+          </t>
+          <t hangText="TED">
+            defines information kept in the Traffic Engineering Database (TED)
+            that is leveraged by IS-IS and OSPF topologies.
+          </t>
+		</list>
+      </t>
+    </section>
+
+    <section title="Definitions and Acronyms">
+      <t>
+        Data model: An abstract model of a conceptual domain that is intended
+        for implementors and contains enough specifics to result in
+        interoperable implementations and data representations
+      </t>      
+      <t>
+        Datastore: A conceptual store of instantiated management information,
+        with individual data items represented by data nodes which are
+        arranged in hierarchical manner.  
+      </t>
+      <t>
+        IGP: Interior Gateway Protocol
+      </t>
+      <t>
+        Information Model: An abstract model of a conceptual domain, independent
+        of a specific implementations or data representation
+      </t>
+      <t>
+        IS-IS: Intermediate System to Intermediate System protocol 		
+      </t>
+      <t>
+        LSP: Label Switched Path
+      </t>
+      <t>
+        OSPF: Open Shortest Path First, a link state routing protocol
+      </t>
+      <t>
+        RBNF: Routing Backus-Naur Form
+      </t>
+      <t>
+        URI: Uniform Resource Identifier
+      </t>
+      <t>
+        SRLG: Shared Risk Link Group
+      </t>
+      <t>
+        TED: Traffic Engineering Database
+      </t>
+    </section>
+    <section title="Network Topology Model Overview">
+      <t>
+        This section provides an overview of the network topology model.  We
+        start with the structure of the foundational model that represents a
+        generic topology.  Subsequently, an overview of selected specific
+        topologies is given - Layer 3 Unicast IGP, OSPF, and IS-IS,
+        respectively. Throughout the document, selected design choices are
+        explained and the pattern that should be applied to extend the model to
+        new types of topologies is presented.
+      </t>
+      <t>  
+        The network topology model is defined by the following components, whose
+        relationship is roughly depicted in the figure below.
+      </t>
+      <figure anchor="model-structure" align="center" title="Overall model structure">
+        <artwork align="left">
+           +-----------------------+
+           |    Network-Topology   |
+           +-----------+-----------+
+                       ^
+                      /|\
+                       | "extends"
+           +-----------^-------------+
+           |   L3-Unicast-Topology   |
+           +--+-------------------+--+
+              ^                   ^
+             /|\                 /|\
+              | "extends"         | "extends"
+     +--------^-------+   +-------^-------+    +--------+
+     | OSPF-Topology  |   | ISIS-Topology |    |  TED   |
+     +--------^-------+   +-------^-------+    +----v---+
+              :                   :                 :
+              :...................:.................:           
+            </artwork>
+      </figure>
+      <t>
+        The Network-Topology component defines the basic network topology
+        model. The L3-Unicast-Topology module extends this model with additional
+        definitions needed to represent Layer 3 Unicast IGP topologies.  This
+        component in turn is extended by OSPF-Topology and ISIS-Topology
+        components providing additional definitions for OSPF and IS-IS
+        topologies, respectively. The TED component, used by both OSPF-Topology
+        and ISIS-Topology components, contains a set of auxiliary definitions
+        related to traffic engineering.
+      </t>
+    </section>
+
+    <section title="Network Topology Information Model">
+      <t> 
+        This section specifies the network topology information model in Routing
+        Backus-Naur Form (RBNF, <xref target="RFC5511"/>).  It also provides
+        diagrams of the main entities that the information model is comprised
+        of.
+      </t>
+
+      <section title="Base Model: the Network-Topology Component">  
+        <t>
+          The following diagram contains an informal graphical depiction of the
+          main elements of the information model:
+        </t>
+        <figure align="center">
+          <artwork align="left"><![CDATA[
+                  +----------------+
+				  |    topology    |<...
+				  +----------------+   :
+				    *           *  :   :
+				    |           |  :...:
+                    |           |
+            +--------+        +--------+
+        ...>|  node	 |<.......|  link  |<...
+        :   +--------+<.......+--------+   :
+		:	 :   *                : :  :   :
+		:.....	 |                : :  :...:
+				 |                : :  
+		    +--------+<...........: :
+			|   TP   |<.............:
+			+--------+          
+          ]]></artwork>
+        </figure>
+        <t>
+          Roughly speaking, the basic information model works as follows: A
+          topology contains nodes and links.  Each node in turn contains
+          termination points.  A link connects two nodes (a source and a
+          destination), terminating on each at a termination point.  Nodes can
+          map onto and be supported by other nodes, while links can map onto and
+          be supported by other links.  Topologies can map onto other, underlay
+          topologies.
+        </t>
+        <t>
+          The information model for the Network-Topology component is more
+          formally shown in the following diagram.
+        </t>
+        <figure align="center">
+          <artwork align="left"><![CDATA[
+  <network-topology> ::= (<topology>...)
+
+  <topology> ::= <TOPOLOGY_IDENTIFIER> 
+                 (<node>
+                 (<link>...) 
+                 [<topology-type>]
+                 [<underlay-topologies>]
+                 [<topology-extension>]
+
+  <topology-type> ::= (<IGP> [<igp-topology-type>]) | 
+                      (<BGP> [<bgp-topology-type>])
+  <igp-topology-type> ::= <OSPF> | <ISIS>
+
+  <bgp-topology-type> ::= <>
+
+  <underlay-topologies> ::= (<TOPOLOGY_IDENTIFIER>...)
+
+  <topology-extension> ::= <igp-topology-extension> |
+                           <bgp-topology-extension> | 
+                           ...
+
+  <node> ::= <NODE_IDENTIFIER> 
+             (<termination-point>...) 
+             [<supporting-nodes>]
+             [<node-extension>]
+
+  <termination-point> ::= <TERMINATION_POINT_IDENTIFIER> 
+                          [<supporting-termination-points>]
+                          [<igp-termination-point>]
+
+  <supporting-termination-points> ::= 
+            (<TERMINATION_POINT_IDENTIFIER>...)
+
+  <supporting-nodes> ::= (<NODE_IDENTIFIER>...)
+
+  <node-extension> ::= <igp-node-extension> |
+                       <bgp-node-extension> | 
+                       ...
+  
+  <link> ::= <LINK_IDENTIFIER> 
+             <source> 
+             <destination> 
+             [<supporting-links>]
+             [<link-extension> ]
+
+  <source> ::= <termination-point-reference>
+  <destination> ::= <termination-point-reference>
+
+  <termination-point-reference> ::= <NODE_IDENTIFIER>
+                                    <TERMINATION_POINT_IDENTIFIER>
+
+  <supporting-links> ::= (<LINK_IDENTIFIER>...)
+
+  <link-extension> ::= <igp-link-extension> |
+                       <bgp-link-extension> | 
+                       ...
+           ]]></artwork>
+        </figure>
+
+        <t>The elements of the Network-Topology information model are as
+        follows:
+
+        <list style="symbols">
+		  <t>
+            A network can contain multiple topologies. Each topology is captured
+            in its own list element, distinguished via a topology-id.
+		  </t>
+		  <t>
+            A topology has a certain type, such as OSPF or IS-IS. A topology can
+            even have multiple types simultaneously.  The type, or types, are
+            captured in the list of "topology-type" components.
+		  </t>
+		  <t>
+            A topology can in turn be part of a hierarchy of topologies,
+            building on top of other topologies.  Any such topologies are
+            captured in list "underlay-topology".
+		  </t>
+		  <t>
+            Furthermore, a topology contains nodes and links, each captured in
+            their own list.
+		  </t>
+		  <t> 
+            A node has a node-id.  This distinguishes the node from other nodes
+            in the list.  In addition, a node has a list of termination points,
+            used to terminate links.  An examples of a termination point might
+            be a physical or logical port or, more generally, an interface.
+            Also, a node can in turn map onto other nodes in an underlay
+            topology.  This is captured in list "supporting-node".
+		  </t>
+		  <t>
+            A link is identified by a link-id, uniquely identifying the link
+            within the topology.  Links are point-to-point and unidirectional.
+            Accordingly, a link contains a source and a destination. Both source
+            and destination reference a corresponding node, as well as a
+            termination point on that node.  Analogous to a node, a link can in
+            turn map onto other links an underlay topology.  This is captured in
+            list "supporting-link".
+		  </t>        
+          <t>
+            The topology, node and link elements can be extended with
+            topology-specific components (topology-extensions, node-extension and
+            link-extension, respectively). This document defines extensions for
+            the L3 unicast topology.
+          </t>
+        </list>
+        </t>
+        <t>
+		  The topology model includes links that are point-to-point and
+		  unidirectional.  It does not directly support multipoint and
+		  bidirectional links.  While this may appear as a limitation, it does
+		  keep the model simple, generic, and allows it to very easily be
+		  subjected applications that make use of graph algorithms.
+		  Bi-directional connections can be represented through pairs of
+		  unidirectional links.  By introducing hierarchies of nodes, with nodes
+		  at one level mapping onto a set of other nodes at another level, and
+		  the introducing new links for nodes at that level, topologies with
+		  connections representing non-point-to-point communication patterns can
+		  be represented.
+        </t>
+        <t>
+          To minimize assumptions of what a topology might actually represent,
+          mappings between topologies, nodes, links, and termination points are
+          kept strictly generic.  For example, no assumptions are made whether a
+          termination point actually refers to an interface, or whether a node
+          refers to a specific "system" or device; the model at this generic
+          level makes no provisions for that.  Any greater specifics about
+          mappings between upper and lower layers can be captured in extending
+          modules.
+		  </t>
+        <t>
+		  Links are terminated by a single termination point, not sets of
+		  termination points.  Connections involving multihoming or link
+		  aggregation schemes need to be modeled using multiple point-to-point
+		  links, then define a link at a higher layer that is supported by those
+		  individual links.
+        </t>
+        <t>
+		  In a hierarchy of topologies, there are nodes mapping to nodes, links
+		  mapping to links, and termination points mapping to termination
+		  points. Some of this information is redundant.  Specifically, with the
+		  link-to-links mapping known, and the termination points of each link
+		  known, maintaining separate termination point mapping information is
+		  not needed but can be derived via transitive closure.
+        </t>
+      </section>
+
+      <section title="Layer 3 Unicast Topology (IGP) Extensions">
+        <section title="The L3-Unicast-Topology Component">
+          <t>
+            In order to represent a general Layer 3 Unicast IGP topology, the
+            basic network topology model needs to be extended.  The
+            corresponding extensions are introduced in a component, whose
+            structure is informally depicted in the following diagram.
+          </t>
+        <figure align="center">
+          <artwork align="left"><![CDATA[
+                  +----------------+
+				  |    topology    |....
+				  +----------------+   :
+				    *      *   ^  ^    :
+				    |      |  /|\ :....:
+        ......      |      |   +------------------+
+		:	 :  	|      |      ......           |
+        :   +:-------+    +-------:+   :   +-------^--------+
+        :..>|  node	 |<...|  link  |<..:   | l3 unicast-IGP |
+		 	+--------+<...+--------+       |    topology    |
+			     ^             ^           +----------------+
+		 	    /|\           /|\              ^         ^
+		    	 |             |              /|\       /|\
+				 |             |               |         |
+		    +----^---+     +---^----+    +-----^--+   +--^-----+   
++------+	| l3 IGP |     | l3 IGP |    |  OSPF  |   | IS-IS  |
+|prefix|---*|  node  |     | link   |    |  topo  |   |  topo  |
++------|	+--------+     +--------+    +--------+   +--------+
+			 ^      ^        ^     ^
+			/|\    /|\      /|\   /|\
+     +-------+      |        |     +----------+
+	 |              |        |                |
++----^---+    +-----^--+  +--^-----+     +----^---+	
+|  OSPF  |    | IS-IS  |  |  OSPF  |     | IS-IS  |
+|  node  |    |  node  |  |  link  |     |  link  |
++--------+    +--------+  +--------+     +--------+        
+          ]]></artwork>
+        </figure>
+        <t>
+          Roughly speaking, layer 3 IGP topology refines the generic
+          topology, and layer 3 IGP nodes, IGP links, and IGP termination
+          points (not depicted) refine the generic nodes, links, and 
+          termination points.  In addition, layer 3 IGP nodes can contain
+          prefixes.  The pattern recurses with OSPF and IS-IS topologies,
+          which are in turn derived from the corresponding layer 3 IGP 
+          entities.  
+        </t>
+        <t>
+           A more formal depiction in RBNF format follows below:        
+        </t>
+          <figure align="center">
+            <artwork align="left"><![CDATA[
+  <igp-topology> ::= <TOPOLOGY_NAME>
+                     [(<FLAGS>...)]
+                     [(<ospf-topology> | <isis-topology>)]
+
+  <igp-node> ::= <NODE_NAME> 
+                 (<router-id>...)
+                 [(<prefix>...)]
+                 [(<FLAGS>...)]
+                 [(<isis-node> | <ospf-node>)] 
+
+  <router-id> ::= <ip-address> | <NUMBER>
+
+  <ip-address> ::= (<IPV4><IPV4_ADDRESS>) | (<IPV6><IPV6_ADDRESS>)
+
+  <prefix> ::= <ip-route>
+               <METRIC>
+               (<FLAGS>...)
+               [(<ospf-prefix> | <isis-prefix>)]
+
+  <ip-route> ::= <ip-address>
+                 <PREFIX_LENGTH>
+
+  <igp-link> ::= <LINK_NAME>
+                 <METRIC>
+                 [(<FLAGS>...)]
+                 [ (<isis-link> |<ospf-link>) ]
+
+  <igp-termination-point> ::= (<ip-address>...) | <NUMBER>
+          ]]></artwork>
+          </figure>
+          <t>
+            The model extends the original network-topology model as follows:
+            <list style="symbols">
+              <t>
+                A new topology type is introduced, igp-topology.  
+              </t>
+              <t>
+                Additional topology attributes are introduced. This allows to
+                introduce additional flags in extending modules that are
+                associated with specific IGP topologies, without needing to
+                revise this component.
+              </t>
+              <t>
+                Additional data objects for nodes are introduced by extending
+                the "node" list of the network topology module.  New objects
+                include again a set of flags, as well as a list of prefixes.
+                Each prefix in turn includes an ip prefix, a metric, and a
+                prefix-specific set of flags.
+              </t>
+              <t>
+                Links are extended as well with a set of parameters, allowing to
+                associate a link with an IGP name, another set of flags, and a
+                link metric.
+              </t>
+            </list>
+          </t>
+        </section>
+
+        <section title="The OSPF-Topology Component">
+          <t>
+            OSPF is the next type of topology represented in the model.  OSPF
+            represents a particular type of Layer 3 Unicast IGP.  Accordingly,
+            the Layer 3 Unicast IGP topology model needs to be extended.  The
+            corresponding extensions are introduced in a separate component
+            "ospf-topology", whose structure is depicted in the following
+            diagram.  For the most part, this module extends the
+            "l3-unicast-igp-topology" component.
+          </t>
+          <figure align="center">
+            <artwork align="left"><![CDATA[
+  <ospf-topology> ::= <AREA_IDENTIFIER>
+
+  <ospf-node> ::= <ospf-router-type> 
+                  [<DR_INTERFACE_IDENTIFIER>]
+                  [(<MUTLI_TOPOLOGY_IDENTIFIER>...)]
+                  [<ospf-node-capabilities>]
+                  [<ted-node>]
+
+  <ospf-router-type> ::= <ABR> | <ASBR> | <INTERNAL> | <PSEUDONODE>
+
+  <ospf-node-capabilities> ::= <>
+
+  <ospf-link> ::= [<MULTI_TOPOLOGY_IDENTIFIER>]
+                  [<ted-link>]
+
+  <ospf-prefix> ::= [<forwarding-address>]
+
+  <forwarding-address> ::= <IPV4><IPV4_ADDRESS>
+          ]]></artwork>
+          </figure>
+          <t>
+			The module extends the l3-unicast-igp-topology as follows:
+			<list style="symbols">
+              <t>
+				A new topology type is introduced, ospf-topology-type. 
+				</t>
+              <t>
+				Additional topology attributes are introduced, which extend the
+				igp-topology-attributes of the l3-unicast-igp-topology
+				component.  The attributes include an OSPF area-id identifying
+				the area.
+              </t>
+              <t>
+				Additional data objects for nodes are introduced by extending
+				the igp-node-attributes of the l3-unicast-igp-topology
+				component.  New objects include router-type, de-interface-id for
+				pseudonodes, list of multi-topology-ids, OSPF node capabilities
+				and traffic engineering attributes.
+              </t>
+              <t>
+				Links are extended with multi-topology-id and traffic
+				engineering link attributes.
+              </t>
+              <t>
+				Prefixes are extended with OSPF specific forwarding address.
+              </t>
+			</list>
+          </t>
+        </section>
+
+        <section title="The IS-IS-Topology Component">
+          <t>
+            IS-IS is another type of Layer 3 Unicast IGP.  Like OSPF topology,
+            IS-IS topology is defined in a separate component, "isis-topology",
+            which extends "l3-unicast-igp-topology".
+          </t>
+          <figure align="center">
+            <artwork align="left"><![CDATA[
+  <isis-topology> ::= <NET_IDENTIFIER>
+
+  <isis-node> ::= <isis-router-type> <iso>
+                  (<NET_IDENTIFIER>...)
+                  [(<MULTI_TOPOLOGY_IDENTIFIER>...)]
+                  [<ted-node>]
+
+  <iso> ::= <ISO_SYSTEM_ID> <ISO_PSEUDONODE_ID>
+  <isis-router-type> ::= <LEVEL_2> | <LEVEL_1> | <LEVEL_2_1>
+
+  <isis-link> ::= [<MULTI_TOPOLOGY_IDENTIFIER>]
+                  [<ted-link>]
+
+  <isis-prefix> ::= <>
+          ]]></artwork>
+          </figure>
+          <t>
+			The module extends the l3-unicast-igp-topology component as follows:
+			<list style="symbols">
+              <t>
+				A new topology type is introduced, "isis-topology-type". 
+              </t>
+              <t>
+				Additional topology attributes are introduced. The attributes
+				include an ISIS NET-id identifying the area.
+              </t>
+              <t>
+				Additional data objects for nodes are introduced by extending
+				"igp-node-attributes" of the l3-unicast-igp-topology component.
+				New objects include router-type, iso-system-id to identify the
+				router, list of multi-topology-id, list of NET ids and traffic
+				engineering attributes.
+              </t>
+              <t>
+				Links are extended with multi-topology-id and traffic
+				engineering link attributes.
+              </t>
+			</list>
+			In addition, the module extends IGP node and link with ISIS attributes.
+          </t>
+        </section>
+
+        <section title="The TED (Traffic Engineering Data) Component">
+          <t>
+            Traffic Engineering Data is required both by OSPF and IS-IS, which
+            are defined in separate components.  Information shared by both is
+            defined in another component, "TED".  This component defines a set
+            of groupings with auxiliary information required and shared by those
+            other components.
+          </t>
+          <figure align="center">
+            <artwork align="left"><![CDATA[
+  <ted-node> ::= <te-router-id>
+                 <local-address>
+                 <pcc-capabilities>
+
+  <te-router-id> ::= [<IPV4><IPV4_ADDRESS>]
+                     [<IPV6><IPV6_ADDRESS>]
+
+  <local-address> ::= [((<IPV4><IPV4_ADDRESS>)...)] | 
+                      [((<IPV6><IPV6_ADDRESS><PREFIX_OPTION>)...)]
+
+  <pcc-capabilities> ::= <>
+
+  <ted-link> ::= <COLOR>
+                 <MAX_LINK_BANDWIDTH>
+                 <MAX_RESV_LINK_BANDWIDTH>
+                 (<UNRESERVED_BANDWIDTH>...)
+                 <TE_DEFAULT_METRIC>
+                 [<srlg-attributes>]
+
+  <srlg-attributes> ::= ( <interface-switching-capabilities>...)
+                        (<SRLG_VALUE>...)
+                        <LINK_PROTECTION_TYPE>
+
+  <interface-switching-capabilities> ::= <switching-capabilities>
+                                         <ENCODING>
+                                         (<MAX_LSP_BANDWIDTH>...)
+                                         [<packet-switch-capable>]
+                                         [<tdm-capable>]
+
+  <packet-switch-capable> ::= <MINIMUM_LSP_BANDWIDTH>
+                              <INTERFACE_MTU>
+
+  <time-division-switch-capable> ::= <MINIMUM_LSP_BANDWIDTH>
+                                     <INDICATION>
+
+  <switching-capabilities> ::= <>
+          ]]></artwork>
+          </figure>
+
+            <t>
+              This module details traffic-engineering node and
+              link attributes:
+              <list style="symbols">
+                <t>
+                  TED node attributes include te-router-id for IPv4 and IPv6,
+                  local IPv4 and IPv6 addresses and path computation client
+                  capabilities.  The path computation client capabilities in
+                  turn include a bit vector for various path computation
+                  capabilities.
+                </t>
+                <t>
+                  TED link attributes comprise link color, max-link-bandwidth,
+                  max-resv-link-bandwidth, unreserved bandwidth and re-metric.
+                  They also include SRLG attributes which contains interface
+                  switching capabilities, a list of SRLG values and link
+                  protection type.  The interface switching capabilities in turn
+                  contains switching capability, encoding, max-lsp-bandwidth and
+                  interface switching specific attributes.
+                </t>
+              </list>
+            </t>
+        </section>
+      </section>
+    </section>
+    
+    <section title="Security Considerations">
+       <t>
+       TBD
+       </t>
+    </section>
+
+    <section title="Contributors">
+    <t>
+    The model presented in this paper was contributed to by more people 
+    than can be listed on the author list.  Additional contributors include:
+    <list style="symbols" >
+		<t>
+          Ken Gray, Juniper Networks
+		</t>
+		<t>
+          Tom Nadeau, Juniper Networks
+		</t>
+		<t>
+          Aleksandr Zhdankin, Cisco
+		</t>
+		<t>
+          Tony Tkacik, Cisco
+		</t>
+		<t>
+          Robert Varga, Pantheon Technologies
+		</t>
+	</list>
+	</t>
+    </section>
+  
+    <section title="Acknowledgements">
+        <t> We wish to acknowledge the helpful contributions, comments, and
+        suggestions that were received from many people. We'd also like to thank
+        the people that contributed to the topology information model during the
+        I2RS Interim meeting in April 2013 - Shane Amante, Andy Bierman, Ed
+        Crabbe, Adrian Farrel, and Joel Halpern.
+		</t>
+    </section>
+    </middle>
+    <back>
+        <references title="Normative References">
+          <?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.5511"?>
+          <?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.6020"?>
+        </references>
+
+        <references title="Informative References">
+          <?rfc include="http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-amante-i2rs-topology-use-cases-00"?>
+          <?rfc include="http://xml.resource.org/public/rfc/bibxml/reference.RFC.3444"?>
+
+		</references>
+   </back> 
+</rfc>
