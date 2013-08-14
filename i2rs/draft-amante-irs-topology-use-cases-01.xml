@@ -153,17 +153,16 @@
   <middle>
     <section anchor="intro" title="Introduction">
       <t>In today's networks, a variety of applications, such as Traffic
-      Engineering, Capacity Planning, Security Auditing or Services
-      Provisioning (for example, Virtual Private Networks), have a common need
-      to acquire and consume network topology information. Unfortunately, all
-      of these applications are (typically) vertically integrated: each uses
-      its own proprietary normalized view of the network and proprietary data
-      collectors, interpreters and adapters, which speak a variety of
-      protocols, (SNMP, CLI, SQL, etc.) directly to network elements and to
-      back-office systems. While some of the topological information can be
-      distributed using routing protocols, unfortunately it is not desirable
-      for some of these applications to understand or participate in routing
-      protocols.</t>
+      Engineering, Capacity Planning, Security Auditing or Services Provisioning
+      (for example, Virtual Private Networks), have a common need to acquire and
+      consume network topology information. Unfortunately, all of these
+      applications are (typically) vertically integrated: each uses its own
+      proprietary normalized view of the network and proprietary data
+      collectors, interpreters and adapters, which speak a variety of protocols,
+      (SNMP, CLI, SQL, etc.) directly to network elements and to back-office
+      systems. While some of the topological information can be distributed
+      using routing protocols, unfortunately it is not desirable for some of
+      these applications to understand or participate in routing protocols.</t>
 
       <t>This approach is incredibly inefficient for several reasons. First,
       developers must write duplicate 'network discovery' functions, which
@@ -190,9 +189,9 @@
       models.</t>
 
       <t>Overall, the software architecture described above at best results in
-      incredibly inefficient use of both software developer resources and
-      network resources, and at worst, it results in some applications simply
-      not having access to this information.</t>
+      inefficient use of both software developer resources and network
+      resources, and at worst, it results in some applications simply not having
+      access to this information.</t>
 
       <t><xref target="fig_current_network_reference"/> is an illustration of
       how individual applications collect data from the underlying network.
@@ -253,32 +252,34 @@
       <section title="Statistics Collection">
 	<t>In <xref target="fig_current_network_reference"/>, "Statistics
 	Collection" is a dedicated infrastructure that collects statistics from
-	Network Elements. It periodically polls Network Elements (for example,
-	every 5-minutes) for octets transferred per interface, per LSP,
-	etc. Collected statistics are stored and collated, (for example, to
-	provide hourly, daily, weekly 95th-percentile figures), within the
-	statistics data warehouse. Applications typically query the statistics
-	data warehouse rather than poll Network Elements directly to get the
+	Network Elements. It periodically (for example, every 5-minutes) polls
+	Network Elements for octets transferred per interface, per LSP,
+	etc. Collected statistics are stored and collated within a statistics
+	data warehouse. Applications typically query the statistics data
+	warehouse rather than poll Network Elements directly to get the
 	appropriate set of link utilization figures for their analysis.</t>
       </section>
 
       <section title="Inventory Collection">
 	<t>"Inventory Collection" is a network function responsible for
-	collecting network element component and state (i.e.: interface up/down,
-	SFP/XFP optics inserted into physical port, etc.) information directly
-	from network elements, as well as storing inventory information about
-	physical network assets that are not retrievable from network elements,
-	(hereafter referred to as a inventory asset database). Inventory
-	Collection from network elements commonly use SNMP and CLI to acquire
-	inventory information. The information housed in the Inventory Manager
-	is retrieved by applications using a variety of protocols: SQL, RPC,
-	etc. Inventory information, retrieved from Network Elements, is updated
-	in the Inventory Collection system on a periodic basis to reflect
-	changes in the physical and/or logical network assets. The polling
-	interval to retrieve updated information is varied depending on scaling
-	constraints of the Inventory Collection systems and expected intervals
-	at which changes to the physical and/or logical assets are expected to
-	occur.</t>
+	collecting component and state information directly from Network
+	Elements, as well as ofr storing inventory information about physical
+	network assets that are not retrievable from Network Elements. The
+	collected data is hereafter referred to as the 'Inventory Asset
+	Database. Examples of information collected from NEtwork Elements are:
+	interface up/down status, the type of SFP/XFP optics inserted into
+	physical port, etc.</t>
+
+	<t>The Inventory Collection function may use SNMP and CLI to acquire
+	inventory information from Network Elements. The information housed in
+	the Inventory Manager is retrieved by applications via a variety of
+	protocols: SQL, RPC, REST etc. Inventory information, retrieved from
+	Network Elements, is periodically updated in the Inventory Collection
+	system to reflect changes in the physical and/or logical network
+	assets. The polling interval to retrieve updated information is varied
+	depending on scaling constraints of the Inventory Collection systems and
+	expected intervals at which changes to the physical and/or logical
+	assets are expected to occur.</t>
 
 	<t>Examples of changes in network inventory that need be learned by the
 	Inventory Collection function are as follows:
@@ -287,7 +288,7 @@
           be actively used in the network (i.e.: provisioned but not yet
           activated).</t>
 
-          <t>Insertion or removal of line cards or other modules, i.e.: optics
+          <t>Insertion or removal of line cards or other modules, such as optics
           modules, during service or equipment provisioning.</t>
 
           <t>Changes made to a specific Network Element through a management
@@ -393,33 +394,34 @@
                          |  Applications  |-+
                          +----------------+
                                  ^ Websockets, ReST, XMPP, I2RS, ...
-       +-------------------------+-------------------------+
-       |                         |                         |
-  +------------+     +-------------------------+     +-------------+
-  |   Policy   |<----|    Topology Manager     |---->|Orchestration|
-  |   Manager  |     | +---------------------+ |     |   Manager   |
-  +------------+     | | Topology Data Model | |     +-------------+
-                     | +---------------------+ |
-                     +-------------------------+ 
-                               ^  ^  ^
-    Websockets, ReST, XMPP     #  |  *    Websockets, ReST, XMPP
-        ########################  |  ************************
-        #                         |                         *
-  +------------+                  |                  +------------+
-  | Statistics |                  |                  | Inventory  |
-  | Collection |                  |                  | Collection |
-  +------------+                  |                  +------------+
-        ^                         | I2RS, NETCONF, SNMP,    ^
-        |                         | TL1 ...                 |
-        +-------------------------+-------------------------+
-        |                         |                         |
-        |                         |                         |
-+----------------+        +----------------+       +----------------+
-| Network Element|        | Network Element|       | Network Element|
-| +------------+ |<-LLDP->| +------------+ |<-LMP->| +------------+ |
-| | Data Model | |        | | Data Model | |       | | Data Model | |
-| +------------+ |        | +------------+ |       | +------------+ |
-+----------------+        +----------------+       +----------------+
+        +------------------------+-------------------------+
+        |                        |                         |
+  +------------+     +------------------------+     +-------------+
+  |   Policy   |<----|    Topology Manager    |---->|Orchestration|
+  |   Manager  |     | +--------------------+ |     |   Manager   |
+  +------------+     | |Topology Information| |     +-------------+
+                     | |       Model        | |
+                     | +--------------------+ |
+                     +------------------------+ 
+                               ^ ^ ^
+    Websockets, ReST, XMPP     # | *    Websockets, ReST, XMPP
+         ####################### | *************************
+         #                       |                         *
+  +------------+                 |                  +------------+
+  | Statistics |                 |                  | Inventory  |
+  | Collection |                 |                  | Collection |
+  +------------+                 |                  +------------+
+        ^                        | I2RS, NETCONF, SNMP,    ^
+        |                        | TL1 ...                 |
+        +------------------------+-------------------------+
+        |                        |                         |
++---------------+        +---------------+       +---------------+
+|Network Element|        |Network Element|       |Network Element|
+| +-----------+ |        | +-----------+ |       | +-----------+ |
+| |Information| |<-LLDP->| |Information| |<-LMP->| |Information| |
+| |   Model   | |        | |   Model   | |       | |   Model   | |
+| +-----------+ |        | +-----------+ |       | +-----------+ |
++---------------+        +---------------+       +---------------+
         ]]></artwork>
         </figure>
 
