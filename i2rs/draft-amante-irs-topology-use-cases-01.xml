@@ -42,7 +42,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="info" docName="draft-amante-irs-topology-use-cases-01"
+<rfc category="info" docName="draft-amante-irs-topology-use-cases-02"
      ipr="trust200902">
   <!-- category values: std, bcp, info, exp, and historic
      ipr values: full3667, noModification3667, noDerivatives3667
@@ -110,7 +110,7 @@
       </address>
     </author>
 
-    <date year="2012"/>
+    <date day="15" month="August" year="2012"/>
 
     <!-- If the month and year are both specified and are the current ones,
          xml2rfc will fill in the current day for you. If only the current year
@@ -210,32 +210,34 @@
       proprietary semantics associated with the internal representation of the
       information. </t>
 
+      <?rfc needLines="25"?> 
       <figure anchor="fig_current_network_reference"
               title="Applications getting topology data">
         <artwork align="center"><![CDATA[
-                            +---------------+
-                         +----------------+ |
-                         |  Applications  |-+
-                         +----------------+
-                               ^  ^  ^
-           SQL, RPC, ReST      #  |  *    SQL, RPC, ReST ...
-        ########################  |  ************************
-        #                         |                         *
-  +------------+                  |                   +------------+
-  | Statistics |                  |                   | Inventory  |
-  | Collection |                  |                   | Collection |
-  +------------+                  |                   +------------+
-        ^                         | NETCONF, I2RS, SNMP,    ^ 
-        |                         | CLI, TL1, ...           |  
-        +-------------------------+-------------------------+  
-        |                         |                         |  
-        |                         |                         |
-+----------------+        +----------------+       +----------------+
-| Network Element|        | Network Element|       | Network Element|
-| +------------+ |<-LLDP->| +------------+ |<-LMP->| +------------+ |
-| | Data Model | |        | | Data Model | |       | | Data Model | |
-| +------------+ |        | +------------+ |       | +------------+ |
-+----------------+        +----------------+       +----------------+
+                           +---------------+
+                        +----------------+ |
+                        |  Applications  |-+
+                        +----------------+
+                              ^  ^  ^
+          SQL, RPC, ReST      #  |  *  SQL, RPC, ReST ...
+     ##########################  |  **********************
+        #                        |                       *
+  +------------+                 |                 +------------+
+  | Statistics |                 |                 | Inventory  |
+  | Collection |                 |                 | Collection |
+  +------------+                 |                 +------------+
+        ^                        | NETCONF, I2RS, SNMP,  ^ 
+        |                        | CLI, TL1, ...         |  
+        +------------------------+-----------------------+  
+        |                        |                       |  
+        |                        |                       |
++---------------+        +---------------+       +---------------+
+|Network Element|        |Network Element|       |Network Element|
+| +-----------+ |        | +-----------+ |       | +-----------+ |
+| |Information| |<-LLDP->| |Information| |<-LMP->| |Information| |
+| |   Model   | |        | |   Model   | |       | |   Model   | |
+| +-----------+ |        | +-----------+ |       | +-----------+ |
++---------------+        +---------------+       +---------------+
        ]]></artwork>
       </figure>
 
@@ -313,49 +315,45 @@
     <section anchor="terminology" title="Terminology">
       <t>The following briefly defines some of the terminology used within
       this document. <list style="hanging">
-          <t hangText="Inventory Manager:"> Describes a function of collecting
-          network element inventory and state information directly from network
-          elements, and potentially associated offline inventory databases, via
-          standards-based data models. Components contained in this super set
-          might be visible or invisible to a specific network layer, i.e.: a
-          physical link is visible within the IGP, however the Layer-2 switch
-          through which the physical link traverses is unknown to the Layer-3
-          IGP. .</t>
+          <t hangText="Inventory Manager"> is a function that collects Network
+          Element inventory and state information directly from Network Elements
+          and from associated offline inventory databases. Inventory information
+          may only be visible at a specific network layer; for example, a
+          physical link is visible within the IGP, but a Layer-2 switch through
+          which the physical link traverses is unknown to the Layer-3 IGP.</t>
 
-          <t hangText="Policy Manager:"> Describes a function of attaching
-          metadata to network components/attributes. Such metadata is likely to
-          include security, routing, L2 VLAN ID, IP numbering, etc. policies
-          that enable the Topology Manager to: a) assemble a normalized view of
-          the network for clients to access; b) allow clients (or, upper-layer
-          applications) access to information collected from various network
-          layers and/or network components, etc. The Policy Manager function may
-          be a sub-component of the Topology Manager or it may be a
-          standalone. This will be determined as the work with I2RS evolves.</t>
+          <t hangText="Policy Manager"> is a function that attaches
+          metadata to network components/attributes. Such metadata may
+          include security, routing, L2 VLAN ID, IP numbering, etc. policies,
+          which enable the Topology Manager to: 
+	  <list style="symbols">
+	    <t>Assemble a normalized view of the network for clients (or
+	    upper-layer applications</t>
+	    <t> Allow clients (or upper-layer applications) access to
+	    information collected from various network layers and/or network
+	    components, etc.</t>
+	  </list>
+	  The Policy Manager function may be a sub-component of the Topology
+	  Manager or it may be a standalone function.</t>
 
-          <t hangText="Topology Manager:"> Network components (inventory, etc.)
-          are retrieved from the Inventory Manager and synthesized with
-          information from the Policy Manager into cohesive, normalized views of
-          network layers. The Topology Manager exposes normalized views of the
-          network via standards-based data models to Clients, or higher-layer
-          applications, to act upon in a read-only and/or read-write
-          fashion. The Topology Manager may also push information back into the
-          Inventory Manager and/or Network Elements to execute changes to the
-          network's behavior, configuration or state.</t>
+          <t hangText="Topology Manager"> is a function that collects
+          topological information from a variety of sources in the network and
+          provides a normalized view of the network topology to clients and/or
+          higher-layer applications.</t>
 
-          <t hangText="Orchestration Manager:"> Describes a function of
-          stitching together resources (i.e.: compute, storage) and/or services
-          with the network or vice-versa. The Orchestration Manager relies on
-          the capabilities provided by the other "Managers" listed above in
-          order to realize a complete service.</t>
+          <t hangText="Orchestration Manager"> is a function that stitches
+          together resources, such as compute or storage, and/or services with
+          the network or vice-versa. To realize a complete service, the
+          Orchestration Manager relies on capabilities provided by the other
+          "Managers" listed above.</t>
 
-          <t hangText="Normalized Topology Data Model:"> A data model that is
-          constructed and represented using an open, standards-based model that
-          is consistent between implementations.</t>
+          <t hangText="Normalized Topology Information Model"> is an open,
+          standards-based information model of the network topology.</t>
 
-          <t hangText="Data Model Abstraction:"> The notion that one is able to
-          represent the same set of elements in a data model at different levels
-          of "focus" in order to limit the amount of information exchanged in
-          order to convey this information.</t>
+          <t hangText="Information Model Abstraction:"> The notion that one is
+          able to represent the same set of elements in an information model at
+          different levels of "focus" in order to limit the amount of
+          information exchanged in order to convey this information.</t>
 
           <t hangText="Multi-Layer Topology:"> Topology is commonly referred to
           using the OSI protocol layering model. For example, Layer 3 represents
@@ -364,36 +362,38 @@
           represented in a single, normalized view of the network to certain
           applications, (i.e.: Capacity Planning, Traffic Engineering, etc.)</t>
 
-          <t hangText="Network Element (NE):">  refers to a network device
+          <t hangText="Network Element (NE)">  refers to a network device
           that typically is addressable (but not always), or a host. It is
           sometimes referred to as a 'Node'.</t>
 
           <t hangText="Links:"> Every NE contains at least 1 link. These are
           used to connect the NE to other NEs in the network. Links may be in a
-          variety of states including up, down, administratively down,
-          internally testing, or dormant. Links are often synonymous with
-          network ports on NEs.</t>
+          variety of states, such as up, down, administratively down, internally
+          testing, or dormant. Links are often synonymous with network ports on
+          NEs.</t>
         </list></t>
     </section>
 
     <section anchor="overview"
-             title="Orchestration, Collection &amp; Presentation Framework">
+             title="The Orchestration, Collection &amp; Presentation Framework">
       <section title="Overview">
 
 	<t><xref target="intro"/> demonstrates the need for a network function
-	that would provide a common, standard-based topology view to
+	that would provide a common, standards-based topology view to
 	applications. Such topology collection/management/presentation function
-	would be a part wider framework, that would also include policy
+	would be a part of a wider framework that should also include policy
 	management and orchestration. The framework is shown in <xref
 	target="fig_topo_mgr"/>.</t>
 
+	<t>
+	<vspace blankLines="999"/>
         <figure anchor="fig_topo_mgr" title="Topology Manager">
           <artwork align="center"><![CDATA[
                             +---------------+
                          +----------------+ |
                          |  Applications  |-+
                          +----------------+
-                                 ^ Websockets, ReST, XMPP, I2RS, ...
+                                 ^   Websockets, ReST, XMPP...
         +------------------------+-------------------------+
         |                        |                         |
   +------------+     +------------------------+     +-------------+
@@ -404,131 +404,133 @@
                      | +--------------------+ |
                      +------------------------+ 
                                ^ ^ ^
-    Websockets, ReST, XMPP     # | *    Websockets, ReST, XMPP
-         ####################### | *************************
-         #                       |                         *
+    Websockets, ReST, XMPP     # | *  Websockets, ReST, XMPP
+         ####################### | ************************
+         #                       |                        *
   +------------+                 |                  +------------+
   | Statistics |                 |                  | Inventory  |
   | Collection |                 |                  | Collection |
   +------------+                 |                  +------------+
-        ^                        | I2RS, NETCONF, SNMP,    ^
-        |                        | TL1 ...                 |
-        +------------------------+-------------------------+
-        |                        |                         |
-+---------------+        +---------------+       +---------------+
-|Network Element|        |Network Element|       |Network Element|
-| +-----------+ |        | +-----------+ |       | +-----------+ |
-| |Information| |<-LLDP->| |Information| |<-LMP->| |Information| |
-| |   Model   | |        | |   Model   | |       | |   Model   | |
-| +-----------+ |        | +-----------+ |       | +-----------+ |
-+---------------+        +---------------+       +---------------+
+        ^                        | I2RS, NETCONF, SNMP,   ^
+        |                        | TL1 ...                |
+        +------------------------+------------------------+
+        |                        |                        |
++---------------+        +---------------+        +---------------+
+|Network Element|        |Network Element|        |Network Element|
+| +-----------+ |        | +-----------+ |        | +-----------+ |
+| |Information| |<-LLDP->| |Information| |<-LMP-->| |Information| |
+| |   Model   | |        | |   Model   | |        | |   Model   | |
+| +-----------+ |        | +-----------+ |        | +-----------+ |
++---------------+        +---------------+        +---------------+
         ]]></artwork>
-        </figure>
-
+        </figure> 
+	</t>
+	  
 	<t>The following sections describe in detail the Topology Manager,
 	Policy Manager and Orchestration Manager functions.</t>
       </section>
 
-      <section anchor="topology_manager" title="Topology Manager">
-        <t>The Topology Manager is responsible for retrieving topological
-        information from the network via a variety of sources. The first most
-        obvious source is the "live" IGP or an equivalent mechanism.  "Live" IGP
-        provides information about links that are components of the active
-        topology, in other words links that are present in the Link State
-        Database (LSDB) and are eligible for forwarding. The second source of
-        topology information is the Inventory Collection system, which provides
-        information for network components not visible within the IGP's LSDB,
-        (i.e.: links or nodes, or properties of those links or nodes, at lower
-        layers of the network). The third source source of topology information
-        is the Statistics Collection system, which provides traffic information
-        (traffic demands, link utilizations, etc.).</t>
+      <section anchor="topology_manager" title="The Topology Manager">
+        <t>The Topology Manager is a function that collects topological
+        information from a variety of sources in the network and provides a
+        cohesive, abstracted view of the network topology to clients and/or
+        higher-layer applications. The topology view is based on a
+        standards-based, normalized topology information model.</t>
 
-        <t>The Topology Manager will synthesize retrieved information into
-        cohesive, abstracted views of the network using a standards-based,
-        normalized topology data model. The Topology Manager can then expose
-        these data models to Clients, or higher-layer applications using a
-        northbound interface, which would be a protocol/API commonly used by
-        higher-layer applications to retrieve and update information. Examples
-        of such protocols are ReST, Websockets, or XMPP. Topology Manager's
-        clients would be able to act upon the information in a read-only and/or
-        read-write fashion, (based on policies defined within the Policy
-        Manager).</t>
+	<t>Topology information sources can be:
+	<list style="symbols">
+	  <t>The "live" Layer 3 IGP or an equivalent mechanism that provides
+	  information about links that are components of the active topology.
+	  Active topology links are present in the Link State Database (LSDB)
+	  and are eligible for forwarding. Layer 3 IGP information can be
+	  obtained by listening to IGP updates flooded through an IGP domain, or
+	  from Network Elements.</t>
 
-        <t>It is envisioned that the Topology Manager will ultimately contain
-        topology information for multiple layers of the network: Transport,
-        Ethernet and IP/MPLS as well as multiple (IGP) areas and/or multiple
-        Autonomous Systems (ASes). This allows the Topology Manager to stitch
-        together a holistic view of several layers of the network, which is an
-        important requirement, particularly for upper-layer Traffic
-        Engineering, Capacity Planning and Provisioning Clients (applications)
-        used to design, augment and optimize IP/MPLS networks that require
-        knowledge of underlying Shared Risk Link Groups (SRLG) within the
-        Transport and/or Ethernet layers of the network.</t>
+	  <t>The Inventory Collection system that provides information for
+	  network components not visible within the Layer 3 IGP's LSDB, (i.e.:
+	  links or nodes, or properties of those links or nodes, at lower layers
+	  of the network).</t>
 
-        <t>The Topology Manager must have the ability to discover and
-        communicate with network elements who are not only active and visible
-        within the Link State Database (LSDB) of an active IGP, but also
-        network elements who are active, but invisible to a LSDB (e.g.: L2
-        Ethernet switches, ROADM's, etc.) that are part of the underlying
-        Transport network. This requirement will influence the choice of
-        protocols needed by the Topology Manager to communicate to/from
-        network elements at the various network layers.</t>
+	  <t>The Statistics Collection system that provides traffic information,
+	  such as traffic demands or link utilizations.</t>
+	</list></t>
 
-        <t>It is also important to recognize that the Topology Manager will be
-        gleaning not only (relatively) static inventory information from the
-        Inventory Manager, i.e.: what linecards, interface types, etc. are
-        actively inserted into network elements, but also dynamic inventory
-        information, as well. With respect to the latter, network elements are
-        expected to rely on various Link Layer Discovery Protocols (i.e.:
-        LLDP, LMP, etc.) that will aid in automatically identifying an
-        adjacent node, port, etc. at the far-side of a link. This information
-        is then pushed to or pulled by the Topology Manager in order for it to
-        have an accurate representation of the physical topology of the
-        network. </t>
+        <t>The Topology Manager provides topology information to Clients or
+        higher-layer applications via a northbound interface, such as ReST,
+        Websockets, or XMPP.</t>
+
+        <t>The Topology Manager will contain topology information for multiple
+        layers of the network: Transport, Ethernet and IP/MPLS, as well as
+        information for multiple Layer 3 IGP areas and multiple Autonomous
+        Systems (ASes). The topology information can be used by higher-level
+        applications, such as Traffic Engineering, Capacity Planning and
+        Provisioning. Such applications are typically used to design, augment
+        and optimize IP/MPLS networks, and require knowledge of underlying
+        Shared Risk Link Groups (SRLG) within the Transport and/or Ethernet
+        layers of the network.</t>
+
+        <t>The Topology Manager must be able to discover Network Elements that
+        are not visible in the "live" L3 IGP's Link State Database (LSDB). Such
+        Network Elements can either be inactive, or active but invisible in the
+        L3 LSDB (e.g.: L2 Ethernet switches, ROADM's, or Network Elements that
+        are in an underlying transport network).</t>
+
+        <t>In addition static inventory information collected from the Inventory
+        Manager, the Topology Manager will also collect dynamic inventory
+        information. For example, Network Elements utilize various Link Layer
+        Discovery Protocols (i.e.: LLDP, LMP, etc.) to automatically identify
+        adjacent nodes and ports. This information can be pushed to or pulled by
+        the Topology Manager in order to create an accurate representation of
+        the physical topology of the network </t>
+
       </section>
 
       <!-- EO topology_manager -->
 
-      <section anchor="policy_manager" title="Policy Manager">
+      <section anchor="policy_manager" title="The Policy Manager">
         <t>The Policy Manager is the function used to enforce and program
         policies applicable to network component/attribute data. Policy
         enforcement is a network-wide function that can be consumed by various
         network elements and services including the Inventory Manager,
         Topology Manager or other network elements. Such policies are likely
-        to encompass the following. <list style="symbols">
-            <t>Logical Identifier Numbering Policies <list style="symbols">
-                <t>Correlation of IP prefix to link based on type of link
-                (P-P, P-PE, PE-CE, etc.)</t>
+        to encompass the following.
 
-                <t>Correlation of IP Prefix to IGP Area</t>
+	<list style="symbols">
+	  <t>Logical Identifier Numbering Policies 
+	  <list style="symbols">
+	    <t>Correlation of IP prefix to link based on type of link
+	    (P-P, P-PE, PE-CE, etc.)</t>
 
-                <t>Layer-2 VLAN ID assignments, etc.</t>
-              </list></t>
+	    <t>Correlation of IP Prefix to IGP Area</t>
 
-            <t>Routing Configuration Policies <list style="symbols">
-                <t>OSPF Area or IS-IS Net-ID to Node (Type) Correlation</t>
+	    <t>Layer-2 VLAN ID assignments, etc.</t>
+	  </list></t>
 
-                <t>BGP routing policies, i.e.: nodes designated for injection
-                of aggregate routes, max-prefix policies, AFI/SAFI to node
-                correlation, etc.</t>
-              </list></t>
+	  <t>Routing Configuration Policies 
+	  <list style="symbols">
+	    <t>OSPF Area or IS-IS Net-ID to Node (Type) Correlation</t>
 
-            <t>Security Policies <list style="symbols">
-                <t>Access Control Lists</t>
+	    <t>BGP routing policies, i.e.: nodes designated for injection
+	    of aggregate routes, max-prefix policies, AFI/SAFI to node
+	    correlation, etc.</t>
+	  </list></t>
 
-                <t>Rate-limiting</t>
-              </list></t>
+	  <t>Security Policies
+	  <list style="symbols">
+	    <t>Access Control Lists</t>
 
-            <t>Network Component/Attribute Data Access Policies. Client's
-            (upper-layer application) read-only or read-write access to
-            Network Components/Attributes contained in the "Inventory Manager"
-            as well as Policies contained within the "Policy Manager"
-            itself.</t>
-          </list></t>
+	    <t>Rate-limiting</t>
+	  </list></t>
 
-        <t>The Policy Manager function may be a sub-component of the Topology
-        or Orchestration Manager or it may be a standalone. This will be
-        determined as the work with I2RS evolves.</t>
+	  <t>Network Component/Attribute Data Access Policies. Client's
+	  (upper-layer application) read-only or read-write access to
+	  Network Components/Attributes contained in the "Inventory Manager"
+	  as well as Policies contained within the "Policy Manager"
+	  itself.</t>
+	</list></t>
+
+        <t>The Policy Manager function may be either a sub-component of the
+        Topology or Orchestration Manager or a standalone function</t>
       </section>
 
       <!-- EO policy_manager -->
@@ -683,16 +685,7 @@ TBD.
           Network Elements will require read-only access to the IGP. However,
           the end result of the computations performed by the Capacity
           Planning Client may require changes to various IGP attributes,
-          (e.g.: IGP metrics, TE link-colors, etc.) These may be applied
-          directly by devising a new capability to either: a) inject
-          information into the IGP that overrides the same information
-          injected by the originating Network Element; or, b) allowing the
-          Topology and/or Inventory Manager the ability to write changes to
-          the Network Element's configuration in order to have it adjust the
-          appropriate IGP attribute(s) and re-flood them throughout the IGP.
-          It would be desirable to have a single mechanism (data model or
-          protocol) that allows the Topology Manager to read and write IGP
-          attributes.</t>
+          (e.g.: IGP metrics, TE link-colors, etc.) </t>
 
           <t>Once the Topology Manager function has assembled a normalized view
           of the topology and synthesized associated metadata with each
