@@ -8,12 +8,16 @@
 <!ENTITY rfc2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
 <!ENTITY rfc4655 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4655.xml">
 <!ENTITY rfc5693 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5693.xml">
+<!ENTITY rfc5212 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5212.xml">
+<!ENTITY rfc5623 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5623.xml">
+
 <!ENTITY I-D.ietf-pce-stateful-pce-02 SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-ietf-pce-stateful-pce-05.xml">
 <!ENTITY I-D.ietf-alto-protocol SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-ietf-alto-protocol-17.xml">
 <!ENTITY I-D.ietf-idr-ls-distribution SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-ietf-idr-ls-distribution-03.xml">
 <!ENTITY I-D.ietf-isis-te-metric-extensions SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-ietf-isis-te-metric-extensions-00.xml">
 <!ENTITY I-D.ietf-ospf-te-metric-extensions SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-ietf-ospf-te-metric-extensions-04.xml">
 
+<!ENTITY I-D.farrkingel-pce-abno-architecture SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-farrkingel-pce-abno-architecture-05.xml">
 ]>
 <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 <!-- used by XSLT processors -->
@@ -833,6 +837,48 @@ TBD.
 
       <!-- EO normalized_view -->
 
+
+      <section title="Virtual Network Topology Manager (VNTM)">
+        <t> Virtual Network Topology Manager (VNTM) is in charge of managing the
+        Virtual Network Topology (VNT), as defined in <xref
+        target="RFC5623"/>. VNT is defined in <xref target="RFC5212"/> as a set
+        of one or more LSPs in one or more lower-layer networks that provides
+        information for efficient path handling in an upper-layer network.</t>
+
+        <t>The maintenance of virtual topology is a complicated task. VNTM have
+        to decide which are the nodes to be interconnected in the lower-layer to
+        fulfill the resource requirements of the upper-layer. This means to
+        create a topology to cope with all demands of the upper layer without
+        wasting resources in the underlying network. Once the decision is made,
+        some actions have to be taken in the network elements of the layers so
+        the new LSPs are provisioned. Moreover, VNT has to release unwanted
+        resources, so they can be available in the lower-layer network for other
+        uses.</t>
+
+        <t>VNTM does not have to solve all previous problems in all
+        scenarios. As defined in <xref target="RFC5623"/> in the PCE-VNTM
+        cooperation model, PCEis computing the paths in the higher layer and
+        when there is not enough resources in the VNT, PCE requests to the VNTM
+        for a new path in the VNT. VNTM checks PCE request using internal
+        policies to check whether this request can be take into account or
+        not. VNTM requests the egress node in the upper layer to set-up the path
+        in the lower layer. However, the VNTM can actively modify the VNT based
+        on the policies and network status without waiting to an explicit PCE
+        request.</t>
+
+        <t>Regarding the provisioning phase, VNTM may have to directly talk with
+        an NMS to set-up the connection <xref target="RFC5623"/> or it can
+        delegate this function to the provisioning manager <xref
+        target="I-D.farrkingel-pce-abno-architecture"/>.</t>
+
+        <t>The aim of this document is not to categorize all implementation
+        options for VNTM, but to present the necessity to retrieve topological
+        information to perform its functions. The VNTM may require the
+        topologies of the lower and/or upper layer and even the inter-layer
+        relation between the upper and lower layer nodes, to decide which is the
+        optimal VNT.</t>
+      </section>
+
       <section anchor="pce" title="Path Computation Element (PCE)">
         <t>As described in <xref target="RFC4655"/> a PCE can be used to
         compute MPLS-TE paths within a "domain" (such as an IGP area) or
@@ -865,8 +911,10 @@ TBD.
         <t>The following figure shows how a PCE can get its TED information
         using a Topology Server.</t>
 
-        <figure anchor="PCE-REFERENCE" title="Topology use case: Path Computation Element ">
-          <artwork align="center"><![CDATA[
+        <t>
+          <vspace blankLines="999"/>
+          <figure anchor="PCE-REFERENCE" title="Topology use case: Path Computation Element ">
+            <artwork align="center"><![CDATA[
              +----------+                           
              |  -----   | TED synchronization via Topology API                        
              | | TED |<-+----------------------------------+
@@ -887,7 +935,8 @@ TBD.
     -------->|  Node    |<------------>|   Node   |   | Manager  |
              +----------+              +----------+   +----------+
 	  ]]></artwork>
-        </figure>
+          </figure>
+        </t>
       </section>
 
       <section anchor="alto" title="ALTO Server">
@@ -1003,6 +1052,10 @@ TBD.
 
       &rfc5693;
 
+      &rfc5623;
+
+      &rfc5212;
+
       &I-D.ietf-pce-stateful-pce-02;
 
       &I-D.ietf-alto-protocol;
@@ -1012,6 +1065,8 @@ TBD.
       &I-D.ietf-ospf-te-metric-extensions;
 
       &I-D.ietf-idr-ls-distribution;
+
+      &I-D.farrkingel-pce-abno-architecture;
 
 
     </references>
