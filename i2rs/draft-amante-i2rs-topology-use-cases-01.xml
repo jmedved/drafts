@@ -65,7 +65,6 @@
 
     <author fullname="Jan Medved" initials="J."  surname="Medved">
       <organization>Cisco Systems, Inc.</organization>
-
       <address>
         <postal>
           <street>170 West Tasman Drive</street>
@@ -74,37 +73,34 @@
           <code>95134</code>
           <country>USA</country>
         </postal>
-
         <email>jmedved@cisco.com</email>
       </address>
     </author>
 
-     <author fullname="Stefano Previdi" initials="S."  surname="Previdi">
+    <author fullname="Stefano Previdi" initials="S."  surname="Previdi">
       <organization>Cisco Systems, Inc.</organization>
       <address>
-	<postal>
-	  <street>170, West Tasman Drive</street>
-	  <city>San Jose</city>
-	  <region>CA</region>
-	  <code>95134</code>
-	  <country>USA</country>
-	</postal>
-	<email>sprevidi@cisco.com</email>
-      </address>
-    </author>
-    <author fullname="Thomas D. Nadeau" initials="T." surname="Nadeau">
-      <organization>Juniper Networks</organization>
-
-      <address>
         <postal>
-          <street>1194 N. Mathilda Ave.</street>
-          <city>Sunnyvale</city>
+          <street>170, West Tasman Drive</street>
+          <city>San Jose</city>
           <region>CA</region>
-          <code>94089</code>
+          <code>95134</code>
           <country>USA</country>
         </postal>
+        <email>sprevidi@cisco.com</email>
+      </address>
+    </author>
 
-        <email>tnadeau@juniper.net</email>
+    <author fullname="Victor Lopez" initials="V." surname="Lopez">
+      <organization>Telefonica I+D</organization>
+      <address>
+        <postal>
+          <street>c/ Don Ramon de la Cruz 84</street>
+          <city>Madrid</city>
+          <code>28006</code>
+          <country>Spain</country>
+        </postal>
+        <email>vlopez@tid.es</email>
       </address>
     </author>
 
@@ -113,7 +109,7 @@
     </author>
 
 
-    <date day="15" month="August" year="2013"/>
+    <date day="20" month="October" year="2013"/>
 
     <!-- If the month and year are both specified and are the current ones,
          xml2rfc will fill in the current day for you. If only the current year
